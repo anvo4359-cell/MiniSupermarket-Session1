@@ -1,3 +1,8 @@
+//********** HOTEN: VO THI THUY AN
+//********** LOP: CCQ2411C
+//********** MSSV: 2124110097
+//********** MON: LAP TRINH UNG DUNG
+
 namespace MiniSupermarket.WinForms
 {
     internal static class Program
@@ -11,7 +16,9 @@ namespace MiniSupermarket.WinForms
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new FormCategoryManagement());
+
+            // Thay đổi Form khởi chạy thành FormLogin
+            Application.Run(new FormLogin());
         }
     }
 }

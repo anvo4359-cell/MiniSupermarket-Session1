@@ -1,3 +1,8 @@
+//**********HOTEN: VO THI THUY AN
+//**********lOP: CCQ2411C
+//**********MSSV: 2124110097
+//**********MON: LAP TRINH UNG DUNG
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace MiniSupermarket.API.Controllers

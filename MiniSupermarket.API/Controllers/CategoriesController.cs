@@ -1,13 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//**********HOTEN: VO THI THUY AN
+//**********lOP: CCQ2411C
+//**********MSSV: 2124110097
+//**********MON: LAP TRINH UNG DUNG
+
+using Microsoft.AspNetCore.Authorization; // Thêm thư viện chứa thuộc tính [Authorize]
+using Microsoft.AspNetCore.Mvc;
 using MiniSupermarket.API.Models;
 
 namespace MiniSupermarket.API.Controllers
 {
     [Route("api/[controller]")] // Định tuyến cơ sở: /api/categories
     [ApiController]
+    [Authorize] // 🔒 Bắt buộc phải có JWT Token hợp lệ mới gọi được tất cả các API trong Controller này
     public class CategoriesController : ControllerBase
     {
-
         // Dữ liệu mẫu lưu tạm trên bộ nhớ RAM (In-Memory) phục vụ kiểm thử khi chưa có Database
         private static readonly List<Category> _categories = new() {
             new Category { CategoryId = 1, CategoryName = "Bánh kẹo & Đồ ăn vặt", Description = "Snack, bánh quy, kẹo dẻo" },
@@ -21,7 +27,6 @@ namespace MiniSupermarket.API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            // Trả về mã 200 OK kèm theo danh sách JSON
             return Ok(_categories);
         }
 
@@ -32,7 +37,6 @@ namespace MiniSupermarket.API.Controllers
             var cat = _categories.FirstOrDefault(c => c.CategoryId == id);
             if (cat == null)
             {
-                // Trả về mã lỗi 404 nếu không tìm thấy ID tương ứng
                 return NotFound(new { message = "Không tìm thấy nhóm hàng!" });
             }
             return Ok(cat);
@@ -46,7 +50,6 @@ namespace MiniSupermarket.API.Controllers
             {
                 return BadRequest(new { message = "Vui lòng nhập từ khóa!" });
             }
-            // Lọc danh sách theo tên chứa từ khóa (không phân biệt chữ hoa/thường)
             var result = _categories
                 .Where(c => c.CategoryName.Contains(keyword, StringComparison.OrdinalIgnoreCase))
                 .ToList();
@@ -61,15 +64,28 @@ namespace MiniSupermarket.API.Controllers
             {
                 return BadRequest(new { message = "Tên không được trống!" });
             }
-            // Tự động tăng ID tiếp theo
             newCat.CategoryId = _categories.Count > 0 ? _categories.Max(c => c.CategoryId) + 1 : 1;
             _categories.Add(newCat);
 
-            // Trả về mã 201 Created kèm đường dẫn dẫn tới bản ghi mới tạo
             return CreatedAtAction(nameof(GetById), new { id = newCat.CategoryId }, newCat);
         }
+        // 5. Kiểm tra quyền Admin (Chỉ tài khoản có Role = Admin mới được gọi)
+        [HttpGet("admin-dashboard")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetAdminDashboard()
+        {
+            return Ok(new { message = "Chào mừng Admin! Bạn có toàn quyền quản lý hệ thống siêu thị mini." });
+        }
 
-        // 5. UPDATE: Cập nhật thông tin nhóm hàng (PUT /api/categories/{id})
+        // 6. Kiểm tra quyền chung cho nhân viên (Cả Admin và Cashier đều gọi được)
+        [HttpGet("staff-pos")]
+        [Authorize(Roles = "Admin,Cashier")]
+        public IActionResult GetStaffPos()
+        {
+            return Ok(new { message = "Màn hình POS Thu ngân sẵn sàng phục vụ bán hàng." });
+        }
+
+        // 7. UPDATE: Cập nhật thông tin nhóm hàng (PUT /api/categories/{id})
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] Category updateCat)
         {
@@ -78,15 +94,13 @@ namespace MiniSupermarket.API.Controllers
             {
                 return NotFound(new { message = "Không tìm thấy nhóm hàng cần sửa!" });
             }
-            // Cập nhật giá trị mới
             cat.CategoryName = updateCat.CategoryName;
             cat.Description = updateCat.Description;
 
-            // Trả về mã 204 NoContent biểu thị cập nhật thành công nhưng không cần trả về dữ liệu mới
             return NoContent();
         }
 
-        // 6. DELETE: Xóa nhóm hàng theo ID (DELETE /api/categories/{id})
+        // 8. DELETE: Xóa nhóm hàng theo ID (DELETE /api/categories/{id})
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
