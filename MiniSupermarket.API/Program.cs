@@ -7,6 +7,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using Microsoft.EntityFrameworkCore;
+using MiniSupermarket.API.Data;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,7 +54,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 // ==================================================
-// 3. CAU HINH SWAGGER + JWT AUTHORIZE
+// 3. CAU HINH ENTITY FRAMEWORK CORE
+// ==================================================
+
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<SupermarketDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+// ==================================================
+// 4. CAU HINH SWAGGER + JWT AUTHORIZE
 // ==================================================
 
 builder.Services.AddSwaggerGen(options =>
@@ -82,13 +94,13 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // ==================================================
-// 4. BUILD UNG DUNG
+// 5. BUILD UNG DUNG
 // ==================================================
 
 var app = builder.Build();
 
 // ==================================================
-// 5. CAU HINH SWAGGER
+// 6. CAU HINH SWAGGER
 // ==================================================
 
 if (app.Environment.IsDevelopment())
@@ -99,7 +111,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // ==================================================
-// 6. MIDDLEWARE
+// 7. MIDDLEWARE
 // ==================================================
 
 app.UseHttpsRedirection();
@@ -110,13 +122,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // ==================================================
-// 7. MAP CONTROLLER
+// 8. MAP CONTROLLER
 // ==================================================
 
 app.MapControllers();
 
 // ==================================================
-// 8. CHAY UNG DUNG
+// 9. CHAY UNG DUNG
 // ==================================================
 
 app.Run();
