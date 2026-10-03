@@ -1,5 +1,4 @@
-﻿
-namespace MiniSupermarket.WinForms
+﻿namespace MiniSupermarket.WinForms
 {
     partial class FormMain
     {
@@ -26,199 +25,234 @@ namespace MiniSupermarket.WinForms
         private void InitializeComponent()
         {
             pnlHeader = new Panel();
+            lblUserInfo = new Label();
             lblTitle = new Label();
             pnlMenu = new Panel();
-
-            btnProduct = new Button();
+            btnLogout = new Button();
+            btnUserManagement = new Button();
+            btnReport = new Button();
             btnCustomer = new Button();
+            btnProduct = new Button();
             btnCategory = new Button();
-            btnLogin = new Button();
-
+            btnPOS = new Button();
+            lblMenuTitle = new Label();
             pnlContent = new Panel();
             lblWelcome = new Label();
-
             pnlHeader.SuspendLayout();
             pnlMenu.SuspendLayout();
             pnlContent.SuspendLayout();
             SuspendLayout();
-
             // 
             // pnlHeader
             // 
             pnlHeader.BackColor = Color.FromArgb(111, 78, 55);
+            pnlHeader.Controls.Add(lblUserInfo);
             pnlHeader.Controls.Add(lblTitle);
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1200, 70);
+            pnlHeader.Size = new Size(1280, 70);
             pnlHeader.TabIndex = 0;
-
+            // 
+            // lblUserInfo
+            // 
+            lblUserInfo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblUserInfo.AutoSize = true;
+            lblUserInfo.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblUserInfo.ForeColor = Color.White;
+            lblUserInfo.Location = new Point(1000, 25);
+            lblUserInfo.Name = "lblUserInfo";
+            lblUserInfo.Size = new Size(312, 23);
+            lblUserInfo.TabIndex = 1;
+            lblUserInfo.Text = "Xin chào | Quyền: CHƯA ĐĂNG NHẬP";
             // 
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font(
-                "Segoe UI",
-                20F,
-                FontStyle.Bold
-            );
+            lblTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             lblTitle.ForeColor = Color.White;
             lblTitle.Location = new Point(25, 15);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(355, 46);
+            lblTitle.Size = new Size(297, 46);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "MINI SUPERMARKET";
-
+            lblTitle.Text = "\U0001f6d2 HAPPY MART";
             // 
             // pnlMenu
             // 
             pnlMenu.BackColor = Color.FromArgb(245, 235, 220);
-
-            pnlMenu.Controls.Add(btnProduct);
+            pnlMenu.Controls.Add(btnLogout);
+            pnlMenu.Controls.Add(btnUserManagement);
+            pnlMenu.Controls.Add(btnReport);
             pnlMenu.Controls.Add(btnCustomer);
+            pnlMenu.Controls.Add(btnProduct);
             pnlMenu.Controls.Add(btnCategory);
-            pnlMenu.Controls.Add(btnLogin);
-
+            pnlMenu.Controls.Add(btnPOS);
+            pnlMenu.Controls.Add(lblMenuTitle);
             pnlMenu.Dock = DockStyle.Left;
             pnlMenu.Location = new Point(0, 70);
             pnlMenu.Name = "pnlMenu";
-            pnlMenu.Size = new Size(220, 680);
+            pnlMenu.Size = new Size(230, 680);
             pnlMenu.TabIndex = 1;
-
             // 
-            // btnLogin
+            // btnLogout
             // 
-            btnLogin.BackColor = Color.FromArgb(111, 78, 55);
-            btnLogin.FlatAppearance.BorderSize = 0;
-            btnLogin.FlatStyle = FlatStyle.Flat;
-            btnLogin.Font = new Font(
-                "Segoe UI",
-                11F,
-                FontStyle.Bold
-            );
-            btnLogin.ForeColor = Color.White;
-            btnLogin.Location = new Point(20, 40);
-            btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(180, 55);
-            btnLogin.TabIndex = 0;
-            btnLogin.Text = "Đăng nhập";
-            btnLogin.UseVisualStyleBackColor = false;
-            btnLogin.Click += btnLogin_Click;
-
+            btnLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnLogout.BackColor = Color.FromArgb(90, 60, 45);
+            btnLogout.FlatAppearance.BorderSize = 0;
+            btnLogout.FlatStyle = FlatStyle.Flat;
+            btnLogout.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            btnLogout.ForeColor = Color.White;
+            btnLogout.Location = new Point(15, 610);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(200, 50);
+            btnLogout.TabIndex = 7;
+            btnLogout.Text = "🚪  Đăng xuất";
+            btnLogout.UseVisualStyleBackColor = false;
+            btnLogout.Click += btnLogout_Click;
             // 
-            // btnCategory
+            // btnUserManagement
             // 
-            btnCategory.BackColor = Color.FromArgb(160, 120, 85);
-            btnCategory.FlatAppearance.BorderSize = 0;
-            btnCategory.FlatStyle = FlatStyle.Flat;
-            btnCategory.Font = new Font(
-                "Segoe UI",
-                11F,
-                FontStyle.Bold
-            );
-            btnCategory.ForeColor = Color.White;
-            btnCategory.Location = new Point(20, 115);
-            btnCategory.Name = "btnCategory";
-            btnCategory.Size = new Size(180, 55);
-            btnCategory.TabIndex = 1;
-            btnCategory.Text = "Category";
-            btnCategory.UseVisualStyleBackColor = false;
-            btnCategory.Click += btnCategory_Click;
-
+            btnUserManagement.BackColor = Color.FromArgb(160, 120, 85);
+            btnUserManagement.FlatAppearance.BorderSize = 0;
+            btnUserManagement.FlatStyle = FlatStyle.Flat;
+            btnUserManagement.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            btnUserManagement.ForeColor = Color.White;
+            btnUserManagement.Location = new Point(15, 355);
+            btnUserManagement.Name = "btnUserManagement";
+            btnUserManagement.Size = new Size(200, 50);
+            btnUserManagement.TabIndex = 6;
+            btnUserManagement.Text = "🛡  Tài khoản";
+            btnUserManagement.UseVisualStyleBackColor = false;
+            btnUserManagement.Click += btnUserManagement_Click;
+            // 
+            // btnReport
+            // 
+            btnReport.BackColor = Color.FromArgb(160, 120, 85);
+            btnReport.FlatAppearance.BorderSize = 0;
+            btnReport.FlatStyle = FlatStyle.Flat;
+            btnReport.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            btnReport.ForeColor = Color.White;
+            btnReport.Location = new Point(15, 295);
+            btnReport.Name = "btnReport";
+            btnReport.Size = new Size(200, 50);
+            btnReport.TabIndex = 5;
+            btnReport.Text = "📊  Báo cáo";
+            btnReport.UseVisualStyleBackColor = false;
+            btnReport.Click += btnReport_Click;
             // 
             // btnCustomer
             // 
             btnCustomer.BackColor = Color.FromArgb(160, 120, 85);
             btnCustomer.FlatAppearance.BorderSize = 0;
             btnCustomer.FlatStyle = FlatStyle.Flat;
-            btnCustomer.Font = new Font(
-                "Segoe UI",
-                11F,
-                FontStyle.Bold
-            );
+            btnCustomer.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             btnCustomer.ForeColor = Color.White;
-            btnCustomer.Location = new Point(20, 190);
+            btnCustomer.Location = new Point(15, 235);
             btnCustomer.Name = "btnCustomer";
-            btnCustomer.Size = new Size(180, 55);
-            btnCustomer.TabIndex = 2;
-            btnCustomer.Text = "Customer";
+            btnCustomer.Size = new Size(200, 50);
+            btnCustomer.TabIndex = 4;
+            btnCustomer.Text = "👥  Khách hàng";
             btnCustomer.UseVisualStyleBackColor = false;
             btnCustomer.Click += btnCustomer_Click;
-
             // 
             // btnProduct
             // 
             btnProduct.BackColor = Color.FromArgb(160, 120, 85);
             btnProduct.FlatAppearance.BorderSize = 0;
             btnProduct.FlatStyle = FlatStyle.Flat;
-            btnProduct.Font = new Font(
-                "Segoe UI",
-                11F,
-                FontStyle.Bold
-            );
+            btnProduct.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             btnProduct.ForeColor = Color.White;
-            btnProduct.Location = new Point(20, 265);
+            btnProduct.Location = new Point(15, 175);
             btnProduct.Name = "btnProduct";
-            btnProduct.Size = new Size(180, 55);
+            btnProduct.Size = new Size(200, 50);
             btnProduct.TabIndex = 3;
-            btnProduct.Text = "Product";
+            btnProduct.Text = "📦  Sản phẩm & Kho";
             btnProduct.UseVisualStyleBackColor = false;
             btnProduct.Click += btnProduct_Click;
-
+            // 
+            // btnCategory
+            // 
+            btnCategory.BackColor = Color.FromArgb(160, 120, 85);
+            btnCategory.FlatAppearance.BorderSize = 0;
+            btnCategory.FlatStyle = FlatStyle.Flat;
+            btnCategory.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            btnCategory.ForeColor = Color.White;
+            btnCategory.Location = new Point(15, 115);
+            btnCategory.Name = "btnCategory";
+            btnCategory.Size = new Size(200, 50);
+            btnCategory.TabIndex = 2;
+            btnCategory.Text = "📁  Nhóm hàng";
+            btnCategory.UseVisualStyleBackColor = false;
+            btnCategory.Click += btnCategory_Click;
+            // 
+            // btnPOS
+            // 
+            btnPOS.BackColor = Color.FromArgb(111, 78, 55);
+            btnPOS.FlatAppearance.BorderSize = 0;
+            btnPOS.FlatStyle = FlatStyle.Flat;
+            btnPOS.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            btnPOS.ForeColor = Color.White;
+            btnPOS.Location = new Point(15, 55);
+            btnPOS.Name = "btnPOS";
+            btnPOS.Size = new Size(200, 50);
+            btnPOS.TabIndex = 1;
+            btnPOS.Text = "\U0001f6d2  Bán hàng POS";
+            btnPOS.UseVisualStyleBackColor = false;
+            btnPOS.Click += btnPOS_Click;
+            // 
+            // lblMenuTitle
+            // 
+            lblMenuTitle.AutoSize = true;
+            lblMenuTitle.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblMenuTitle.ForeColor = Color.FromArgb(111, 78, 55);
+            lblMenuTitle.Location = new Point(22, 18);
+            lblMenuTitle.Name = "lblMenuTitle";
+            lblMenuTitle.Size = new Size(228, 30);
+            lblMenuTitle.TabIndex = 0;
+            lblMenuTitle.Text = "HỆ THỐNG QUẢN LÝ";
             // 
             // pnlContent
             // 
-            pnlContent.BackColor = Color.White;
+            pnlContent.BackColor = Color.FromArgb(250, 248, 245);
             pnlContent.Controls.Add(lblWelcome);
             pnlContent.Dock = DockStyle.Fill;
-            pnlContent.Location = new Point(220, 70);
+            pnlContent.Location = new Point(230, 70);
             pnlContent.Name = "pnlContent";
-            pnlContent.Size = new Size(980, 680);
+            pnlContent.Size = new Size(1050, 680);
             pnlContent.TabIndex = 2;
             pnlContent.Paint += pnlContent_Paint;
-
             // 
             // lblWelcome
             // 
-            lblWelcome.AutoSize = true;
-            lblWelcome.Font = new Font(
-                "Segoe UI",
-                18F,
-                FontStyle.Bold
-            );
+            lblWelcome.Dock = DockStyle.Fill;
+            lblWelcome.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             lblWelcome.ForeColor = Color.FromArgb(111, 78, 55);
-            lblWelcome.Location = new Point(300, 280);
+            lblWelcome.Location = new Point(0, 0);
             lblWelcome.Name = "lblWelcome";
-            lblWelcome.Size = new Size(315, 41);
+            lblWelcome.Size = new Size(1050, 680);
             lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "MINI SUPERMARKET";
-
+            lblWelcome.Text = "\U0001f6d2 HAPPY MART\r\n\r\nHỆ THỐNG POS THU NGÂN\r\nTÍCH HỢP QUẢN LÝ KHO";
+            lblWelcome.TextAlign = ContentAlignment.MiddleCenter;
+            lblWelcome.Click += lblWelcome_Click;
             // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1200, 750);
-
+            ClientSize = new Size(1280, 750);
             Controls.Add(pnlContent);
             Controls.Add(pnlMenu);
             Controls.Add(pnlHeader);
-
-            MinimumSize = new Size(1000, 650);
+            MinimumSize = new Size(1100, 650);
             Name = "FormMain";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Mini Supermarket";
-
+            Text = "Happy Mart - POS & Quản lý kho";
             Load += FormMain_Load;
-
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
-
             pnlMenu.ResumeLayout(false);
-
+            pnlMenu.PerformLayout();
             pnlContent.ResumeLayout(false);
-            pnlContent.PerformLayout();
-
             ResumeLayout(false);
         }
 
@@ -230,13 +264,18 @@ namespace MiniSupermarket.WinForms
 
         private Panel pnlHeader;
         private Label lblTitle;
+        private Label lblUserInfo;
 
         private Panel pnlMenu;
+        private Label lblMenuTitle;
 
-        private Button btnLogin;
+        private Button btnPOS;
         private Button btnCategory;
-        private Button btnCustomer;
         private Button btnProduct;
+        private Button btnCustomer;
+        private Button btnReport;
+        private Button btnUserManagement;
+        private Button btnLogout;
 
         private Panel pnlContent;
         private Label lblWelcome;

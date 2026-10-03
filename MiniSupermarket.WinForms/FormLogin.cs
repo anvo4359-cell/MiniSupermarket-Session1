@@ -1,30 +1,48 @@
-﻿using System.Net.Http.Json;
+﻿//********** HOTEN: VO THI THUY AN
+//********** LOP: CCQ2411C
+//********** MSSV: 2124110097
+//********** MON: LAP TRINH UNG DUNG
+//********** NGAY THUCHIEN: 03/10/2026
+//********** DE TAI: HAPPY MART - POS THU NGAN TICH HOP QUAN LY KHO
+
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace MiniSupermarket.WinForms
 {
     public partial class FormLogin : Form
     {
-        // Kết nối đến Web API
+        // ============================================================
+        // KẾT NỐI ĐẾN WEB API
+        // ============================================================
+
         private static readonly HttpClient _client = new HttpClient
         {
             BaseAddress = new Uri("http://localhost:5037/api/")
         };
+
+        // ============================================================
+        // CONSTRUCTOR
+        // ============================================================
 
         public FormLogin()
         {
             InitializeComponent();
         }
 
-        // ==============================
+        // ============================================================
         // XỬ LÝ ĐĂNG NHẬP
-        // ==============================
+        // ============================================================
+
         private async void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtUser.Text.Trim();
             string password = txtPass.Text.Trim();
 
-            // Kiểm tra tài khoản và mật khẩu
+            // ========================================================
+            // KIỂM TRA DỮ LIỆU NHẬP
+            // ========================================================
+
             if (string.IsNullOrEmpty(username) ||
                 string.IsNullOrEmpty(password))
             {
@@ -40,22 +58,30 @@ namespace MiniSupermarket.WinForms
 
             try
             {
-                // Dữ liệu gửi lên API
+                // ====================================================
+                // DỮ LIỆU ĐĂNG NHẬP GỬI LÊN API
+                // ====================================================
+
                 var loginData = new
                 {
                     Username = username,
                     Password = password
                 };
 
-                // Gọi POST /api/auth/login
+                // ====================================================
+                // GỌI API:
+                // POST /api/auth/login
+                // ====================================================
+
                 var response = await _client.PostAsJsonAsync(
                     "auth/login",
                     loginData
                 );
 
-                // ==============================
+                // ====================================================
                 // ĐĂNG NHẬP THÀNH CÔNG
-                // ==============================
+                // ====================================================
+
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonString =
@@ -64,40 +90,56 @@ namespace MiniSupermarket.WinForms
                     using var doc =
                         JsonDocument.Parse(jsonString);
 
-                    // Lưu JWT Token
+                    // =================================================
+                    // LƯU JWT TOKEN
+                    // =================================================
+
                     SessionManager.JwtToken =
                         doc.RootElement
                             .GetProperty("token")
                             .GetString()
                         ?? string.Empty;
 
-                    // Lưu Role
+                    // =================================================
+                    // LƯU ROLE
+                    // =================================================
+
                     SessionManager.CurrentRole =
                         doc.RootElement
                             .GetProperty("role")
                             .GetString()
                         ?? string.Empty;
 
+                    SessionManager.CurrentUsername = username;
+
+                    // =================================================
+                    // THÔNG BÁO ĐĂNG NHẬP THÀNH CÔNG
+                    // =================================================
+
                     MessageBox.Show(
                         $"Đăng nhập thành công!\n\n" +
                         $"Tài khoản: {username}\n" +
-                        $"Quyền: {SessionManager.CurrentRole}\n\n" +
-                        $"JWT Token đã được cấp.",
+                        $"Quyền: {SessionManager.CurrentRole}",
                         "Đăng nhập thành công",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information
                     );
 
-                    // ==============================
-                    // BUỔI 2 CHỈ TEST LOGIN + JWT
-                    // CHƯA MỞ FORM BUỔI 1
-                    // ==============================
+                    // =================================================
+                    // TRẢ KẾT QUẢ VỀ CHO FORMMMAIN
+                    // =================================================
 
-                    // Không mở FormCategoryManagement
-                    // Không chuyển sang màn hình khác
+                    DialogResult = DialogResult.OK;
+
+                    // Đóng FormLogin
+                    Close();
                 }
                 else
                 {
+                    // =================================================
+                    // ĐĂNG NHẬP THẤT BẠI
+                    // =================================================
+
                     string errorMessage =
                         await response.Content.ReadAsStringAsync();
 
@@ -112,6 +154,10 @@ namespace MiniSupermarket.WinForms
             }
             catch (Exception ex)
             {
+                // ====================================================
+                // LỖI KẾT NỐI API
+                // ====================================================
+
                 MessageBox.Show(
                     "Lỗi kết nối đến Server:\n\n" +
                     ex.Message,
@@ -122,9 +168,9 @@ namespace MiniSupermarket.WinForms
             }
         }
 
-        // ==============================
+        // ============================================================
         // CÁC EVENT CỦA FORM
-        // ==============================
+        // ============================================================
 
         private void txtPass_TextChanged(object sender, EventArgs e)
         {
@@ -144,7 +190,6 @@ namespace MiniSupermarket.WinForms
 
         private void label3_Click(object sender, EventArgs e)
         {
-
         }
     }
 }
