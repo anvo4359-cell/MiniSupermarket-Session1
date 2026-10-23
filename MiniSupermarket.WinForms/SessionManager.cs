@@ -36,8 +36,26 @@ namespace MiniSupermarket.WinForms
         // Địa chỉ Web API
         private static readonly HttpClient _client = new HttpClient
         {
-            BaseAddress = new Uri("http://localhost:5037/api/")
+            BaseAddress = new Uri(
+                Environment.GetEnvironmentVariable("HAPPYMART_API_URL")
+                ?? "http://localhost:5037/api/")
         };
+
+        public static HttpClient Client => _client;
+
+        public static void ApplyToken(HttpRequestMessage request)
+        {
+            request.Headers.Authorization = string.IsNullOrWhiteSpace(SessionManager.JwtToken)
+                ? null
+                : new AuthenticationHeaderValue("Bearer", SessionManager.JwtToken);
+        }
+
+        public static void ClearSession()
+        {
+            SessionManager.JwtToken = string.Empty;
+            SessionManager.CurrentUsername = string.Empty;
+            SessionManager.CurrentRole = string.Empty;
+        }
 
         /// <summary>
         /// Đăng nhập vào hệ thống.

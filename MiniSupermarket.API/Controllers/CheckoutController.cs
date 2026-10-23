@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
 using MiniSupermarket.API.Models;
 using System.Data;
@@ -8,6 +9,7 @@ namespace MiniSupermarket.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,Cashier")]
     public class CheckoutController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -30,6 +32,25 @@ namespace MiniSupermarket.API.Controllers
                     message = "Giỏ hàng rỗng, không thể thanh toán!"
                 });
             }
+
+            if (request.RewardPointsToUse < 0)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Điểm thưởng sử dụng không được âm!"
+                });
+            }
+
+            request.Items = request.Items
+                .GroupBy(item => item.ProductId)
+                .Select(group => new CartItemCheckoutDto
+                {
+                    ProductId = group.Key,
+                    Quantity = group.Sum(item => item.Quantity),
+                    UnitPrice = group.First().UnitPrice
+                })
+                .ToList();
 
             if (string.IsNullOrWhiteSpace(request.CashierUsername))
             {
@@ -116,6 +137,40 @@ namespace MiniSupermarket.API.Controllers
                 }
 
                 // Quy tắc: mỗi 10.000 đồng được 1 điểm
+                int rewardPointsToUse = request.RewardPointsToUse;
+                int availablePoints;
+
+                const string customerPointsSql = @"
+                    SELECT RewardPoints
+                    FROM dbo.Customers WITH (UPDLOCK, HOLDLOCK)
+                    WHERE CustomerId = @CustomerId";
+
+                using (var customerPointsCommand = new SqlCommand(
+                    customerPointsSql, connection, transaction))
+                {
+                    customerPointsCommand.Parameters.Add("@CustomerId", SqlDbType.Int)
+                        .Value = request.CustomerId;
+                    object? points = customerPointsCommand.ExecuteScalar();
+                    if (points is null || points == DBNull.Value)
+                    {
+                        throw new InvalidOperationException("Không tìm thấy khách hàng!");
+                    }
+
+                    availablePoints = Convert.ToInt32(points);
+                }
+
+                if (rewardPointsToUse > availablePoints)
+                {
+                    throw new InvalidOperationException("Khách hàng không đủ điểm thưởng!");
+                }
+
+                decimal loyaltyDiscount = rewardPointsToUse * 1000m;
+                if (loyaltyDiscount > finalAmount)
+                {
+                    throw new InvalidOperationException("Số điểm sử dụng vượt quá giá trị hóa đơn!");
+                }
+
+                finalAmount -= loyaltyDiscount;
                 int rewardPoints = (int)(finalAmount / 10000m);
 
                 string orderCode =
@@ -226,7 +281,7 @@ namespace MiniSupermarket.API.Controllers
                 // Cộng điểm thưởng cho khách hàng
                 const string updatePointsSql = @"
                     UPDATE dbo.Customers
-                    SET RewardPoints = RewardPoints + @Points
+                    SET RewardPoints = RewardPoints - @RedeemedPoints + @Points
                     WHERE CustomerId = @CustomerId";
 
                 using (var customerCommand =
@@ -234,6 +289,9 @@ namespace MiniSupermarket.API.Controllers
                 {
                     customerCommand.Parameters.Add(
                         "@Points", SqlDbType.Int).Value = rewardPoints;
+
+                    customerCommand.Parameters.Add(
+                        "@RedeemedPoints", SqlDbType.Int).Value = rewardPointsToUse;
 
                     customerCommand.Parameters.Add(
                         "@CustomerId", SqlDbType.Int).Value = request.CustomerId;
@@ -257,6 +315,8 @@ namespace MiniSupermarket.API.Controllers
                     totalItems,
                     finalAmount,
                     rewardPointsAdded = rewardPoints
+                    , rewardPointsRedeemed = rewardPointsToUse
+                    , loyaltyDiscount
                 });
             }
             catch (Exception ex)

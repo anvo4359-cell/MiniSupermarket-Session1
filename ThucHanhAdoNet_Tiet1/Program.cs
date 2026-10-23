@@ -2,51 +2,52 @@
 using System;
 using Microsoft.Data.SqlClient;
 
-class Program
+namespace ThucHanhAdoNet_Tiet1
 {
-    static void Main()
+    internal class Program
     {
-        string connectionString =
-            @"Server=(localdb)\MSSQLLocalDB;Database=MiniSupermarketDb;Integrated Security=True;TrustServerCertificate=True;";
-
-        try
+        static void Main(string[] args)
         {
-            using SqlConnection conn =
-                new SqlConnection(connectionString);
+            string connectionString =
+                @"Server=(localdb)\MSSQLLocalDB;Database=MiniSupermarketDb;Integrated Security=True;TrustServerCertificate=True;";
 
-            conn.Open();
+            Console.WriteLine("=== BAI 1: DEM TONG SO MAT HANG ===");
 
-            string sql = @"
-                SELECT ProductId, Barcode, ProductName,
-                       Price, StockQuantity
-                FROM Products
-                ORDER BY ProductId ASC";
-
-            using SqlCommand cmd = new SqlCommand(sql, conn);
-            using SqlDataReader reader = cmd.ExecuteReader();
-
-            Console.WriteLine(
-                "{0,-5} {1,-15} {2,-25} {3,12} {4,10}",
-                "ID", "Barcode", "Ten san pham", "Gia", "Ton kho");
-
-            Console.WriteLine(new string('-', 75));
-
-            while (reader.Read())
+            using (SqlConnection connection =
+                   new SqlConnection(connectionString))
             {
-                Console.WriteLine(
-                    "{0,-5} {1,-15} {2,-25} {3,12:N0} {4,10}",
-                    reader["ProductId"],
-                    reader["Barcode"],
-                    reader["ProductName"],
-                    reader["Price"],
-                    reader["StockQuantity"]);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Loi: " + ex.Message);
-        }
+                try
+                {
+                    string query = "SELECT COUNT(*) FROM Products";
 
-        Console.ReadKey();
+                    using (SqlCommand command =
+                           new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        Console.WriteLine(
+                            "Da ket noi SQL Server thanh cong!");
+
+                        object? result = command.ExecuteScalar();
+
+                        int totalCount = Convert.ToInt32(result);
+
+                        Console.WriteLine(
+                            $"Tong so mat hang: {totalCount} san pham.");
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("[LOI SQL]: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("[LOI HE THONG]: " + ex.Message);
+                }
+            }
+
+            Console.WriteLine("Nhan phim bat ky de ket thuc...");
+            Console.ReadKey();
+        }
     }
 }

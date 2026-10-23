@@ -17,5 +17,7 @@ namespace MiniSupermarket.API.Models
         public int CustomerId { get; set; }
 
         public List<CartItemCheckoutDto> Items { get; set; } = new();
+
+        public int RewardPointsToUse { get; set; }
     }
 }

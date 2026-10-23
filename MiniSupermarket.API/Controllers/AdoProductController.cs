@@ -1,5 +1,11 @@
-﻿
+﻿/*
+ * Ho ten sinh vien: VoThiThuyAn
+ * Ma sinh vien: 2124110097
+ * Ngay tao: 10/10/2026
+ * Mo ta: Controller ADO.NET thuan - Tra cuu ma vach sieu toc va demo DataTable
+ */
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -16,6 +22,7 @@ namespace MiniSupermarket.API.Controllers
 
     [Route("api/ado-products")]
     [ApiController]
+    [Authorize(Roles = "Admin,Cashier,Warehouse")]
     public class AdoProductController : ControllerBase
     {
         private readonly IConfiguration _configuration;

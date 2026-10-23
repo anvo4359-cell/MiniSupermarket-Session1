@@ -1,5 +1,4 @@
-﻿
-// ================================================================
+﻿// ================================================================
 // ********** THÔNG TIN SINH VIÊN **********
 // HỌ TÊN : VO THI THUY AN
 // LỚP    : CCQ2411C
@@ -33,6 +32,15 @@ namespace MiniSupermarket.WinForms
             BaseAddress = new Uri("http://localhost:5037/api/")
         };
 
+        private System.Windows.Forms.Timer _searchTimer; // Timer chống gọi API liên tục khi gõ tìm kiếm
+        private int _currentPage = 1;
+        private const int PageSize = 5;
+        private int _totalPages = 1;
+        private int _totalItems;
+        private Button _btnPrev = null!;
+        private Button _btnNext = null!;
+        private Label _lblPaging = null!;
+
         // ============================================================
         // CONSTRUCTOR
         // ============================================================
@@ -40,19 +48,50 @@ namespace MiniSupermarket.WinForms
         public FormCustomerManagement()
         {
             InitializeComponent();
+            InitializePagingControls();
 
             // Gắn sự kiện cho các nút
+            btnAdd.Click -= btnAdd_Click;
             btnAdd.Click += btnAdd_Click;
+
+            btnUpdate.Click -= btnUpdate_Click;
             btnUpdate.Click += btnUpdate_Click;
+
+            btnDelete.Click -= btnDelete_Click;
             btnDelete.Click += btnDelete_Click;
+
+            btnClear.Click -= btnClear_Click;
+            btnClear.Click += btnClear_Click;
+
+            btnLoad.Click -= btnLoad_Click;
             btnLoad.Click += btnLoad_Click;
+
+            btnSearch.Click -= btnSearch_Click;
             btnSearch.Click += btnSearch_Click;
 
             // Click dòng trong DataGridView
+            dgvCustomers.CellClick -= dgvCustomers_CellClick;
             dgvCustomers.CellClick += dgvCustomers_CellClick;
 
             // Khi Form được mở
+            this.Load -= FormCustomerManagement_Load;
             this.Load += FormCustomerManagement_Load;
+
+            // Đăng ký sự kiện tự động tìm kiếm khi gõ phím vào ô txtKeyword
+            if (txtKeyword != null)
+            {
+                txtKeyword.TextChanged -= txtKeyword_TextChanged;
+                txtKeyword.TextChanged += txtKeyword_TextChanged;
+            }
+
+            // Khởi tạo Timer debounce tìm kiếm (300ms)
+            _searchTimer = new System.Windows.Forms.Timer();
+            _searchTimer.Interval = 300;
+            _searchTimer.Tick += async (s, e) =>
+            {
+                _searchTimer.Stop();
+                await PerformSearchAsync();
+            };
         }
 
         // ============================================================
@@ -96,15 +135,19 @@ namespace MiniSupermarket.WinForms
             try
             {
                 SetJwtToken();
+                var result = await _client.GetFromJsonAsync<PagedResponseDto<CustomerDto>>(
+                    $"customers/paged?pageNumber={_currentPage}&pageSize={PageSize}");
+                if (result == null) return;
+                _totalItems = result.TotalItems;
+                _totalPages = Math.Max(1, result.TotalPages);
+                if (_currentPage > _totalPages) { _currentPage = _totalPages; await LoadDataAsync(); return; }
 
-                var customers =
-                    await _client.GetFromJsonAsync<List<CustomerDto>>(
-                        "customers"
-                    );
-
-                dgvCustomers.DataSource = customers;
+                // Bật tự động sinh cột và liên kết danh sách DTO
+                dgvCustomers.AutoGenerateColumns = true;
+                dgvCustomers.DataSource = result.Items;
 
                 SetColumnHeaders();
+                UpdatePagingControls();
             }
             catch (HttpRequestException ex)
             {
@@ -137,30 +180,31 @@ namespace MiniSupermarket.WinForms
             if (dgvCustomers.Columns["CustomerId"] != null)
             {
                 dgvCustomers.Columns["CustomerId"].HeaderText = "Mã KH";
+                dgvCustomers.Columns["CustomerId"].FillWeight = 50;
             }
 
             if (dgvCustomers.Columns["CustomerName"] != null)
             {
-                dgvCustomers.Columns["CustomerName"].HeaderText =
-                    "Tên khách hàng";
+                dgvCustomers.Columns["CustomerName"].HeaderText = "Tên khách hàng";
+                dgvCustomers.Columns["CustomerName"].FillWeight = 150;
             }
 
             if (dgvCustomers.Columns["Phone"] != null)
             {
-                dgvCustomers.Columns["Phone"].HeaderText =
-                    "Số điện thoại";
+                dgvCustomers.Columns["Phone"].HeaderText = "Số điện thoại";
+                dgvCustomers.Columns["Phone"].FillWeight = 90;
             }
 
             if (dgvCustomers.Columns["Address"] != null)
             {
-                dgvCustomers.Columns["Address"].HeaderText =
-                    "Địa chỉ";
+                dgvCustomers.Columns["Address"].HeaderText = "Địa chỉ";
+                dgvCustomers.Columns["Address"].FillWeight = 200;
             }
 
             if (dgvCustomers.Columns["Email"] != null)
             {
-                dgvCustomers.Columns["Email"].HeaderText =
-                    "Email";
+                dgvCustomers.Columns["Email"].HeaderText = "Email";
+                dgvCustomers.Columns["Email"].FillWeight = 180;
             }
         }
 
@@ -172,6 +216,7 @@ namespace MiniSupermarket.WinForms
             object sender,
             EventArgs e)
         {
+            txtKeyword.Clear();
             await LoadDataAsync();
         }
 
@@ -254,8 +299,7 @@ namespace MiniSupermarket.WinForms
                     await LoadDataAsync();
                     ClearInputs();
                 }
-                else if (response.StatusCode ==
-                         System.Net.HttpStatusCode.Unauthorized)
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     MessageBox.Show(
                         "Phiên đăng nhập đã hết hạn hoặc JWT Token không hợp lệ!",
@@ -303,7 +347,7 @@ namespace MiniSupermarket.WinForms
             if (string.IsNullOrWhiteSpace(txtId.Text))
             {
                 MessageBox.Show(
-                    "Vui lòng chọn khách hàng cần sửa!",
+                    "Vui lòng chọn khách hàng cần sửa từ bảng!",
                     "Thông báo",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
@@ -358,8 +402,7 @@ namespace MiniSupermarket.WinForms
                     await LoadDataAsync();
                     ClearInputs();
                 }
-                else if (response.StatusCode ==
-                         System.Net.HttpStatusCode.Unauthorized)
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     MessageBox.Show(
                         "Phiên đăng nhập đã hết hạn hoặc JWT Token không hợp lệ!",
@@ -429,7 +472,7 @@ namespace MiniSupermarket.WinForms
             }
 
             DialogResult confirm = MessageBox.Show(
-                $"Bạn có chắc muốn xóa khách hàng ID = {id}?",
+                $"Bạn có chắc muốn xóa khách hàng ID = {id} không?",
                 "Xác nhận xóa",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
@@ -459,8 +502,7 @@ namespace MiniSupermarket.WinForms
                     await LoadDataAsync();
                     ClearInputs();
                 }
-                else if (response.StatusCode ==
-                         System.Net.HttpStatusCode.Unauthorized)
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     MessageBox.Show(
                         "Phiên đăng nhập đã hết hạn hoặc JWT Token không hợp lệ!",
@@ -498,68 +540,89 @@ namespace MiniSupermarket.WinForms
 
         // ============================================================
         // TÌM KIẾM CUSTOMER
-        // GET /api/customers/search?keyword=...
         // ============================================================
 
         private async void btnSearch_Click(
             object sender,
             EventArgs e)
         {
-            string keyword = txtKeyword.Text.Trim();
+            _searchTimer.Stop();
+            await PerformSearchAsync();
+        }
 
-            if (string.IsNullOrWhiteSpace(keyword))
-            {
-                await LoadDataAsync();
-                return;
-            }
+        // Tự động tìm kiếm ngay khi gõ phím vào ô txtKeyword
+        private void txtKeyword_TextChanged(object sender, EventArgs e)
+        {
+            _searchTimer.Stop();
+            _searchTimer.Start();
+        }
 
+        // Hàm chung gọi API tìm kiếm
+        private async Task PerformSearchAsync()
+        {
             try
             {
                 SetJwtToken();
+                string keyword = txtKeyword.Text.Trim();
+                _currentPage = 1;
+                string url = $"customers/paged?pageNumber=1&pageSize={PageSize}&keyword={Uri.EscapeDataString(keyword)}";
+                var paged = await _client.GetFromJsonAsync<PagedResponseDto<CustomerDto>>(url);
+                if (paged == null) return;
+                _totalItems = paged.TotalItems;
+                _totalPages = Math.Max(1, paged.TotalPages);
 
-                string url =
-                    "customers/search?keyword=" +
-                    Uri.EscapeDataString(keyword);
-
-                var result =
-                    await _client.GetFromJsonAsync<List<CustomerDto>>(
-                        url
-                    );
-
-                dgvCustomers.DataSource = result;
+                dgvCustomers.AutoGenerateColumns = true;
+                dgvCustomers.DataSource = paged.Items;
 
                 SetColumnHeaders();
+                UpdatePagingControls();
+            }
+            catch
+            {
+                // Bỏ qua lỗi ngầm khi đang gõ phím nhanh liên tục
+            }
+        }
 
-                if (result == null || result.Count == 0)
-                {
-                    MessageBox.Show(
-                        "Không tìm thấy khách hàng phù hợp!",
-                        "Thông báo",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                MessageBox.Show(
-                    "Lỗi tìm kiếm!\n\n" +
-                    ex.Message,
-                    "Lỗi",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    "Lỗi tìm kiếm!\n\n" +
-                    ex.Message,
-                    "Lỗi",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
+        private void InitializePagingControls()
+        {
+            Panel panel = new() { Height = 42, Dock = DockStyle.Bottom, BackColor = Color.White };
+            _btnPrev = new Button { Text = "◀ Trang trước", Width = 110, Height = 28, Left = 8, Top = 7 };
+            _btnNext = new Button { Text = "Trang sau ▶", Width = 110, Height = 28, Top = 7 };
+            _lblPaging = new Label { TextAlign = ContentAlignment.MiddleCenter, Top = 7, Height = 28 };
+            _btnPrev.Click += async (_, _) => { if (_currentPage > 1) { _currentPage--; await LoadDataAsync(); } };
+            _btnNext.Click += async (_, _) => { if (_currentPage < _totalPages) { _currentPage++; await LoadDataAsync(); } };
+            panel.Controls.AddRange(new Control[] { _btnPrev, _btnNext, _lblPaging });
+            panel.Resize += (_, _) => { _btnNext.Left = panel.Width - _btnNext.Width - 8; _lblPaging.Left = _btnPrev.Right + 8; _lblPaging.Width = _btnNext.Left - _lblPaging.Left - 8; };
+            dgvCustomers.Parent?.Controls.Add(panel);
+            panel.BringToFront();
+        }
+
+        private void UpdatePagingControls()
+        {
+            if (_lblPaging == null) return;
+            _lblPaging.Text = $"Trang {_currentPage}/{_totalPages} - Tổng {_totalItems} khách hàng";
+            _btnPrev.Enabled = _currentPage > 1;
+            _btnNext.Enabled = _currentPage < _totalPages;
+        }
+
+        // ============================================================
+        // XÓA TRẮNG Ô NHẬP (LÀM MỚI)
+        // ============================================================
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearInputs();
+            txtKeyword.Clear();
+        }
+
+        private void ClearInputs()
+        {
+            txtId.Text = "";
+            txtCustomerName.Text = "";
+            txtPhone.Text = "";
+            txtAddress.Text = "";
+            txtEmail.Text = "";
+            txtCustomerName.Focus();
         }
 
         // ============================================================
@@ -623,27 +686,9 @@ namespace MiniSupermarket.WinForms
             return true;
         }
 
-        // ============================================================
-        // XÓA TRẮNG Ô NHẬP
-        // ============================================================
-
-        private void ClearInputs()
+        private void dgvCustomers_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            txtId.Text = "";
-            txtCustomerName.Text = "";
-            txtPhone.Text = "";
-            txtAddress.Text = "";
-            txtEmail.Text = "";
-        }
 
-        // ============================================================
-        // EVENT KHÁC
-        // ============================================================
-
-        private void groupBox1_Enter(
-            object sender,
-            EventArgs e)
-        {
         }
     }
 
@@ -662,5 +707,15 @@ namespace MiniSupermarket.WinForms
         public string Address { get; set; } = string.Empty;
 
         public string Email { get; set; } = string.Empty;
+        public int RewardPoints { get; set; }
+    }
+
+    public class PagedResponseDto<T>
+    {
+        public int CurrentPage { get; set; }
+        public int PageSize { get; set; }
+        public int TotalItems { get; set; }
+        public int TotalPages { get; set; }
+        public List<T> Items { get; set; } = new();
     }
 }

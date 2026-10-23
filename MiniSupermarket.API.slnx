@@ -2,4 +2,6 @@
   <Project Path="MiniSupermarket.API/MiniSupermarket.API.csproj" />
   <Project Path="MiniSupermarket.WinForms/MiniSupermarket.WinForms.csproj" />
   <Project Path="ThucHanhAdoNet_Tiet1/ThucHanhAdoNet_Tiet1.csproj" Id="abff8496-450a-47d0-9384-d8b845e0e1e5" />
+  <Project Path="ThucHanhAdoNet_Tiet2/ThucHanhAdoNet_Tiet2.csproj" Id="54aadcff-83a0-4ac7-9f1b-c3406cc2f01c" />
+  <Project Path="ThucHanhAdoNet_Tiet3/ThucHanhAdoNet_Tiet3.csproj" Id="8a7961b1-88cc-4314-b161-ea80d6fb6d95" />
 </Solution>

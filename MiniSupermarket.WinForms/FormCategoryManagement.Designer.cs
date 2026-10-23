@@ -1,16 +1,21 @@
-﻿namespace MiniSupermarket.WinForms
+﻿// ================================================================
+// ********** THÔNG TIN SINH VIÊN **********
+// HỌ TÊN : VO THI THUY AN
+// LỚP    : CCQ2411C
+// MSSV   : 2124110097
+// MÔN    : LẬP TRÌNH ỨNG DỤNG
+// NGÀY   : 26/09/2026
+// ================================================================
+// MÔ TẢ:
+// File thiết kế giao diện Quản lý Nhóm hàng (Category) WinForms.
+// ================================================================
+
+namespace MiniSupermarket.WinForms
 {
     partial class FormCategoryManagement
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,223 +27,365 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            txtId = new TextBox();
-            txtCategoryName = new TextBox();
-            txtDescription = new TextBox();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            pnlHeader = new Panel();
+            lblTitle = new Label();
+            lblStudent = new Label();
+            pnlMainContainer = new Panel();
+            dgvCategories = new DataGridView();
+            pnlSearchCard = new Panel();
+            lblSearch = new Label();
             txtKeyword = new TextBox();
-            btnAdd = new Button();
-            btnUpdate = new Button();
             btnSearch = new Button();
             btnLoad = new Button();
+            pnlCategoryCard = new Panel();
+            lblCardHeader = new Label();
+            lblId = new Label();
+            txtId = new TextBox();
+            lblCategoryName = new Label();
+            txtCategoryName = new TextBox();
+            lblDescription = new Label();
+            txtDescription = new TextBox();
+            flpButtons = new FlowLayoutPanel();
+            btnAdd = new Button();
+            btnUpdate = new Button();
             btnDelete = new Button();
-            groupBox1 = new GroupBox();
-            label3 = new Label();
-            label2 = new Label();
-            label1 = new Label();
-            groupBox2 = new GroupBox();
-            dgvCategories = new DataGridView();
-            groupBox3 = new GroupBox();
-            groupBox1.SuspendLayout();
-            groupBox2.SuspendLayout();
+            btnClear = new Button();
+            pnlHeader.SuspendLayout();
+            pnlMainContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCategories).BeginInit();
-            groupBox3.SuspendLayout();
+            pnlSearchCard.SuspendLayout();
+            pnlCategoryCard.SuspendLayout();
+            flpButtons.SuspendLayout();
             SuspendLayout();
             // 
-            // txtId
+            // pnlHeader
             // 
-            txtId.Location = new Point(6, 57);
-            txtId.Name = "txtId";
-            txtId.Size = new Size(125, 27);
-            txtId.TabIndex = 1;
+            pnlHeader.BackColor = Color.FromArgb(11, 30, 54);
+            pnlHeader.Controls.Add(lblTitle);
+            pnlHeader.Controls.Add(lblStudent);
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(1220, 75);
+            pnlHeader.TabIndex = 0;
             // 
-            // txtCategoryName
+            // lblTitle
             // 
-            txtCategoryName.Location = new Point(6, 128);
-            txtCategoryName.Name = "txtCategoryName";
-            txtCategoryName.Size = new Size(125, 27);
-            txtCategoryName.TabIndex = 2;
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.FromArgb(212, 175, 55);
+            lblTitle.Location = new Point(20, 12);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(295, 35);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "QUẢN LÝ NHÓM HÀNG";
             // 
-            // txtDescription
+            // lblStudent
             // 
-            txtDescription.Location = new Point(6, 204);
-            txtDescription.Name = "txtDescription";
-            txtDescription.Size = new Size(125, 27);
-            txtDescription.TabIndex = 3;
+            lblStudent.AutoSize = true;
+            lblStudent.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
+            lblStudent.ForeColor = Color.FromArgb(180, 200, 220);
+            lblStudent.Location = new Point(23, 47);
+            lblStudent.Name = "lblStudent";
+            lblStudent.Size = new Size(344, 20);
+            lblStudent.TabIndex = 1;
+            lblStudent.Text = "VO THI THUY AN - CCQ2411C - MSSV: 2124110097";
+            // 
+            // pnlMainContainer
+            // 
+            pnlMainContainer.AutoScroll = true;
+            pnlMainContainer.Controls.Add(dgvCategories);
+            pnlMainContainer.Controls.Add(pnlSearchCard);
+            pnlMainContainer.Controls.Add(pnlCategoryCard);
+            pnlMainContainer.Dock = DockStyle.Fill;
+            pnlMainContainer.Location = new Point(0, 75);
+            pnlMainContainer.Name = "pnlMainContainer";
+            pnlMainContainer.Padding = new Padding(20);
+            pnlMainContainer.Size = new Size(1220, 775);
+            pnlMainContainer.TabIndex = 1;
+            // 
+            // dgvCategories
+            // 
+            dgvCategories.AllowUserToAddRows = false;
+            dgvCategories.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(248, 249, 251);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(232, 240, 254);
+            dataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(11, 30, 54);
+            dgvCategories.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgvCategories.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCategories.BackgroundColor = Color.White;
+            dgvCategories.BorderStyle = BorderStyle.None;
+            dgvCategories.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(11, 30, 54);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(212, 175, 55);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(11, 30, 54);
+            dgvCategories.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvCategories.ColumnHeadersHeight = 42;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9.5F);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(40, 40, 40);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(232, 240, 254);
+            dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(11, 30, 54);
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            dgvCategories.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvCategories.Dock = DockStyle.Fill;
+            dgvCategories.EnableHeadersVisualStyles = false;
+            dgvCategories.GridColor = Color.FromArgb(230, 235, 240);
+            dgvCategories.Location = new Point(20, 270);
+            dgvCategories.MultiSelect = false;
+            dgvCategories.Name = "dgvCategories";
+            dgvCategories.ReadOnly = true;
+            dgvCategories.RowHeadersVisible = false;
+            dgvCategories.RowHeadersWidth = 51;
+            dgvCategories.RowTemplate.Height = 35;
+            dgvCategories.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCategories.Size = new Size(1180, 485);
+            dgvCategories.TabIndex = 0;
+            // 
+            // pnlSearchCard
+            // 
+            pnlSearchCard.BackColor = Color.White;
+            pnlSearchCard.Controls.Add(lblSearch);
+            pnlSearchCard.Controls.Add(txtKeyword);
+            pnlSearchCard.Controls.Add(btnSearch);
+            pnlSearchCard.Controls.Add(btnLoad);
+            pnlSearchCard.Dock = DockStyle.Top;
+            pnlSearchCard.Location = new Point(20, 210);
+            pnlSearchCard.Name = "pnlSearchCard";
+            pnlSearchCard.Size = new Size(1180, 60);
+            pnlSearchCard.TabIndex = 1;
+            // 
+            // lblSearch
+            // 
+            lblSearch.AutoSize = true;
+            lblSearch.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            lblSearch.ForeColor = Color.FromArgb(11, 30, 54);
+            lblSearch.Location = new Point(20, 18);
+            lblSearch.Name = "lblSearch";
+            lblSearch.Size = new Size(85, 21);
+            lblSearch.TabIndex = 0;
+            lblSearch.Text = "Tìm kiếm:";
             // 
             // txtKeyword
             // 
-            txtKeyword.Location = new Point(6, 19);
+            txtKeyword.BorderStyle = BorderStyle.FixedSingle;
+            txtKeyword.Font = new Font("Segoe UI", 10F);
+            txtKeyword.Location = new Point(140, 15);
             txtKeyword.Name = "txtKeyword";
-            txtKeyword.Size = new Size(310, 27);
-            txtKeyword.TabIndex = 4;
-            // 
-            // btnAdd
-            // 
-            btnAdd.Location = new Point(566, 344);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(85, 29);
-            btnAdd.TabIndex = 5;
-            btnAdd.Text = "Thêm mới";
-            btnAdd.UseVisualStyleBackColor = true;
-            // 
-            // btnUpdate
-            // 
-            btnUpdate.Location = new Point(657, 344);
-            btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(76, 29);
-            btnUpdate.TabIndex = 6;
-            btnUpdate.Text = "Cập nhật";
-            btnUpdate.UseVisualStyleBackColor = true;
+            txtKeyword.PlaceholderText = " Nhập tên nhóm hàng hoặc từ khóa cần tìm...";
+            txtKeyword.Size = new Size(580, 30);
+            txtKeyword.TabIndex = 1;
+            txtKeyword.TextChanged += txtKeyword_TextChanged; // Tự động tìm kiếm khi gõ
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(573, 19);
+            FormatButton(btnSearch, " Tìm kiếm", Color.FromArgb(11, 30, 54), Color.FromArgb(212, 175, 55));
+            btnSearch.Location = new Point(740, 12);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(94, 29);
-            btnSearch.TabIndex = 7;
-            btnSearch.Text = "Tìm kiếm";
-            btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Size = new Size(120, 36);
+            btnSearch.TabIndex = 2;
             btnSearch.Click += btnSearch_Click;
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(673, 19);
+            FormatButton(btnLoad, " Tải lại", Color.FromArgb(108, 117, 125), Color.White);
+            btnLoad.Location = new Point(870, 12);
             btnLoad.Name = "btnLoad";
-            btnLoad.Size = new Size(94, 29);
-            btnLoad.TabIndex = 8;
-            btnLoad.Text = "Tải lại";
-            btnLoad.UseVisualStyleBackColor = true;
+            btnLoad.Size = new Size(130, 36);
+            btnLoad.TabIndex = 3;
+            btnLoad.Click += btnLoad_Click;
+            // 
+            // pnlCategoryCard
+            // 
+            pnlCategoryCard.BackColor = Color.White;
+            pnlCategoryCard.Controls.Add(lblCardHeader);
+            pnlCategoryCard.Controls.Add(lblId);
+            pnlCategoryCard.Controls.Add(txtId);
+            pnlCategoryCard.Controls.Add(lblCategoryName);
+            pnlCategoryCard.Controls.Add(txtCategoryName);
+            pnlCategoryCard.Controls.Add(lblDescription);
+            pnlCategoryCard.Controls.Add(txtDescription);
+            pnlCategoryCard.Controls.Add(flpButtons);
+            pnlCategoryCard.Dock = DockStyle.Top;
+            pnlCategoryCard.Location = new Point(20, 20);
+            pnlCategoryCard.Name = "pnlCategoryCard";
+            pnlCategoryCard.Size = new Size(1180, 190);
+            pnlCategoryCard.TabIndex = 0;
+            // 
+            // lblCardHeader
+            // 
+            lblCardHeader.AutoSize = true;
+            lblCardHeader.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblCardHeader.ForeColor = Color.FromArgb(11, 30, 54);
+            lblCardHeader.Location = new Point(15, 12);
+            lblCardHeader.Name = "lblCardHeader";
+            lblCardHeader.Size = new Size(206, 25);
+            lblCardHeader.TabIndex = 0;
+            lblCardHeader.Text = "Thông tin nhóm hàng";
+            // 
+            // lblId
+            // 
+            lblId.AutoSize = true;
+            lblId.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            lblId.ForeColor = Color.FromArgb(70, 80, 95);
+            lblId.Location = new Point(20, 55);
+            lblId.Name = "lblId";
+            lblId.Size = new Size(59, 21);
+            lblId.TabIndex = 1;
+            lblId.Text = "Mã ID:";
+            // 
+            // txtId
+            // 
+            txtId.BackColor = Color.FromArgb(242, 244, 247);
+            txtId.BorderStyle = BorderStyle.FixedSingle;
+            txtId.Font = new Font("Segoe UI", 10F);
+            txtId.Location = new Point(140, 52);
+            txtId.Name = "txtId";
+            txtId.ReadOnly = true;
+            txtId.Size = new Size(180, 30);
+            txtId.TabIndex = 2;
+            // 
+            // lblCategoryName
+            // 
+            lblCategoryName.AutoSize = true;
+            lblCategoryName.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            lblCategoryName.ForeColor = Color.FromArgb(70, 80, 95);
+            lblCategoryName.Location = new Point(360, 55);
+            lblCategoryName.Name = "lblCategoryName";
+            lblCategoryName.Size = new Size(133, 21);
+            lblCategoryName.TabIndex = 3;
+            lblCategoryName.Text = "Tên nhóm hàng:";
+            // 
+            // txtCategoryName
+            // 
+            txtCategoryName.BorderStyle = BorderStyle.FixedSingle;
+            txtCategoryName.Font = new Font("Segoe UI", 10F);
+            txtCategoryName.Location = new Point(500, 52);
+            txtCategoryName.Name = "txtCategoryName";
+            txtCategoryName.Size = new Size(660, 30);
+            txtCategoryName.TabIndex = 4;
+            txtCategoryName.TextChanged += txtCategoryName_TextChanged;
+            // 
+            // lblDescription
+            // 
+            lblDescription.AutoSize = true;
+            lblDescription.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            lblDescription.ForeColor = Color.FromArgb(70, 80, 95);
+            lblDescription.Location = new Point(20, 100);
+            lblDescription.Name = "lblDescription";
+            lblDescription.Size = new Size(58, 21);
+            lblDescription.TabIndex = 5;
+            lblDescription.Text = "Mô tả:";
+            // 
+            // txtDescription
+            // 
+            txtDescription.BorderStyle = BorderStyle.FixedSingle;
+            txtDescription.Font = new Font("Segoe UI", 10F);
+            txtDescription.Location = new Point(140, 97);
+            txtDescription.Name = "txtDescription";
+            txtDescription.Size = new Size(1020, 30);
+            txtDescription.TabIndex = 6;
+            // 
+            // flpButtons
+            // 
+            flpButtons.Controls.Add(btnAdd);
+            flpButtons.Controls.Add(btnUpdate);
+            flpButtons.Controls.Add(btnDelete);
+            flpButtons.Controls.Add(btnClear);
+            flpButtons.Location = new Point(140, 138);
+            flpButtons.Name = "flpButtons";
+            flpButtons.Size = new Size(600, 45);
+            flpButtons.TabIndex = 7;
+            // 
+            // btnAdd
+            // 
+            FormatButton(btnAdd, " Thêm mới", Color.FromArgb(11, 30, 54), Color.FromArgb(212, 175, 55));
+            btnAdd.Click += btnAdd_Click;
+            // 
+            // btnUpdate
+            // 
+            FormatButton(btnUpdate, " Cập nhật", Color.FromArgb(51, 122, 183), Color.White);
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(739, 344);
-            btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(70, 29);
-            btnDelete.TabIndex = 9;
-            btnDelete.Text = "Xóa";
-            btnDelete.UseVisualStyleBackColor = true;
+            FormatButton(btnDelete, " Xóa", Color.FromArgb(217, 83, 79), Color.White);
+            btnDelete.Click += btnDelete_Click;
             // 
-            // groupBox1
+            // btnClear
             // 
-            groupBox1.Controls.Add(label3);
-            groupBox1.Controls.Add(label2);
-            groupBox1.Controls.Add(label1);
-            groupBox1.Controls.Add(txtId);
-            groupBox1.Controls.Add(txtCategoryName);
-            groupBox1.Controls.Add(txtDescription);
-            groupBox1.Location = new Point(532, 81);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(277, 234);
-            groupBox1.TabIndex = 10;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Thông tin Nhóm hàng";
-            groupBox1.Enter += groupBox1_Enter;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(7, 181);
-            label3.Name = "label3";
-            label3.Size = new Size(48, 20);
-            label3.TabIndex = 6;
-            label3.Text = "Mô tả";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(6, 105);
-            label2.Name = "label2";
-            label2.Size = new Size(111, 20);
-            label2.TabIndex = 5;
-            label2.Text = "Tên nhóm hàng";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(6, 34);
-            label1.Name = "label1";
-            label1.Size = new Size(49, 20);
-            label1.TabIndex = 4;
-            label1.Text = "Mã ID";
-            // 
-            // groupBox2
-            // 
-            groupBox2.Controls.Add(dgvCategories);
-            groupBox2.Location = new Point(12, 81);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(501, 338);
-            groupBox2.TabIndex = 11;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Danh sách Nhóm hàng";
-            // 
-            // dgvCategories
-            // 
-            dgvCategories.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCategories.Location = new Point(16, 26);
-            dgvCategories.Name = "dgvCategories";
-            dgvCategories.RowHeadersWidth = 51;
-            dgvCategories.Size = new Size(451, 306);
-            dgvCategories.TabIndex = 0;
-            dgvCategories.CellClick += dgvCategories_CellClick;
-            dgvCategories.CellContentClick += dgvCategories_CellClick;
-            // 
-            // groupBox3
-            // 
-            groupBox3.Controls.Add(txtKeyword);
-            groupBox3.Controls.Add(btnSearch);
-            groupBox3.Controls.Add(btnLoad);
-            groupBox3.Location = new Point(12, 12);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(797, 62);
-            groupBox3.TabIndex = 12;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Tìm kiếm";
+            FormatButton(btnClear, " Làm mới", Color.FromArgb(108, 117, 125), Color.White);
+            btnClear.Click += btnClear_Click;
             // 
             // FormCategoryManagement
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(939, 450);
-            Controls.Add(groupBox3);
-            Controls.Add(groupBox2);
-            Controls.Add(groupBox1);
-            Controls.Add(btnDelete);
-            Controls.Add(btnUpdate);
-            Controls.Add(btnAdd);
+            BackColor = Color.FromArgb(244, 246, 249);
+            ClientSize = new Size(1220, 850);
+            Controls.Add(pnlMainContainer);
+            Controls.Add(pnlHeader);
+            MinimumSize = new Size(1050, 750);
             Name = "FormCategoryManagement";
-            Text = "FormCategoryManagement";
-            Load += FormCategoryManagement_Load;
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            groupBox2.ResumeLayout(false);
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Quản lý nhóm hàng - Happy Mart";
+            pnlHeader.ResumeLayout(false);
+            pnlHeader.PerformLayout();
+            pnlMainContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvCategories).EndInit();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
+            pnlSearchCard.ResumeLayout(false);
+            pnlSearchCard.PerformLayout();
+            pnlCategoryCard.ResumeLayout(false);
+            pnlCategoryCard.PerformLayout();
+            flpButtons.ResumeLayout(false);
             ResumeLayout(false);
         }
 
+        private void FormatButton(Button btn, string text, Color backColor, Color foreColor)
+        {
+            btn.Text = text;
+            btn.BackColor = backColor;
+            btn.ForeColor = foreColor;
+            btn.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Margin = new Padding(0, 0, 12, 0);
+            btn.Size = new Size(120, 38);
+            btn.Cursor = Cursors.Hand;
+        }
+
         #endregion
+
+        private Panel pnlHeader;
+        private Label lblTitle;
+        private Label lblStudent;
+        private Panel pnlMainContainer;
+        private Panel pnlCategoryCard;
+        private Label lblCardHeader;
+        private Label lblId;
         private TextBox txtId;
+        private Label lblCategoryName;
         private TextBox txtCategoryName;
+        private Label lblDescription;
         private TextBox txtDescription;
-        private TextBox txtKeyword;
+        private FlowLayoutPanel flpButtons;
         private Button btnAdd;
         private Button btnUpdate;
+        private Button btnDelete;
+        private Button btnClear;
+        private Panel pnlSearchCard;
+        private Label lblSearch;
+        private TextBox txtKeyword;
         private Button btnSearch;
         private Button btnLoad;
-        private Button btnDelete;
-        private GroupBox groupBox1;
-        private Label label2;
-        private Label label1;
-        private Label label3;
-        private GroupBox groupBox2;
-        private GroupBox groupBox3;
         private DataGridView dgvCategories;
     }
 }

@@ -5,6 +5,7 @@
 //********** NGAYTHUCHIEN: 19/9/2026
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +18,17 @@ var builder = WebApplication.CreateBuilder(args);
 // 1. CAU HINH JWT AUTHENTICATION
 // ==================================================
 
-var jwtSecret = builder.Configuration["JwtSettings:Secret"]
-    ?? "SupermarketSecretKeyDoAnMonHoc2026SecureString!!";
+var jwtSecret = builder.Configuration["JwtSettings:Secret"];
+var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
+var jwtAudience = builder.Configuration["JwtSettings:Audience"];
+
+if (string.IsNullOrWhiteSpace(jwtSecret) || jwtSecret.Length < 32 ||
+    string.IsNullOrWhiteSpace(jwtIssuer) || string.IsNullOrWhiteSpace(jwtAudience))
+{
+    throw new InvalidOperationException(
+        "Thiếu cấu hình JwtSettings:Secret (tối thiểu 32 ký tự), Issuer hoặc Audience. " +
+        "Hãy cấu hình bằng User Secrets hoặc biến môi trường trước khi chạy API.");
+}
 
 builder.Services.AddAuthentication(options =>
 {
@@ -38,8 +48,10 @@ builder.Services.AddAuthentication(options =>
             Encoding.UTF8.GetBytes(jwtSecret)
         ),
 
-        ValidateIssuer = false,
-        ValidateAudience = false,
+        ValidIssuer = jwtIssuer,
+        ValidateIssuer = true,
+        ValidAudience = jwtAudience,
+        ValidateAudience = true,
 
         ValidateLifetime = true
     };
@@ -51,6 +63,24 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddControllers();
 
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+        new BadRequestObjectResult(new
+        {
+            success = false,
+            message = "Dữ liệu gửi lên không hợp lệ.",
+            errors = context.ModelState
+                .Where(pair => pair.Value?.Errors.Count > 0)
+                .ToDictionary(
+                    pair => pair.Key,
+                    pair => pair.Value!.Errors.Select(error =>
+                        string.IsNullOrWhiteSpace(error.ErrorMessage)
+                            ? "Giá trị không hợp lệ."
+                            : error.ErrorMessage).ToArray())
+        });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 
 // ==================================================
@@ -59,6 +89,12 @@ builder.Services.AddEndpointsApiExplorer();
 
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        "Thiếu ConnectionStrings:DefaultConnection trong cấu hình API.");
+}
 
 builder.Services.AddDbContext<SupermarketDbContext>(options =>
     options.UseSqlServer(connectionString));

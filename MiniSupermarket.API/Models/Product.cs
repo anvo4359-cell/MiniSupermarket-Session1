@@ -19,8 +19,10 @@ namespace MiniSupermarket.API.Models
         public string ProductName { get; set; } = string.Empty;
 
         [Column(TypeName = "decimal(18,2)")]
+        [Range(typeof(decimal), "0.01", "9999999999999999", ErrorMessage = "Giá sản phẩm phải lớn hơn 0.")]
         public decimal Price { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Số lượng tồn kho không được âm.")]
         public int StockQuantity { get; set; }
 
         public int CategoryId { get; set; }

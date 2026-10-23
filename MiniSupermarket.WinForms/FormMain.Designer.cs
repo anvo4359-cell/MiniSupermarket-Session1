@@ -1,4 +1,11 @@
-﻿namespace MiniSupermarket.WinForms
+﻿//********** HOTEN: VO THI THUY AN
+//********** LOP: CCQ2411C
+//********** MSSV: 2124110097
+//********** MON: LAP TRINH UNG DUNG
+//********** NGAY THUCHIEN: 03/10/2026
+//********** DE TAI: HAPPY MART - POS THU NGAN TICH HOP QUAN LY KHO
+
+namespace MiniSupermarket.WinForms
 {
     partial class FormMain
     {
@@ -10,13 +17,13 @@
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
             {
                 components.Dispose();
             }
-
             base.Dispose(disposing);
         }
 
@@ -45,7 +52,7 @@
             // 
             // pnlHeader
             // 
-            pnlHeader.BackColor = Color.FromArgb(111, 78, 55);
+            pnlHeader.BackColor = Color.FromArgb(11, 30, 54); // Dark Navy chuẩn Login (#0B1E36)
             pnlHeader.Controls.Add(lblUserInfo);
             pnlHeader.Controls.Add(lblTitle);
             pnlHeader.Dock = DockStyle.Top;
@@ -59,27 +66,28 @@
             lblUserInfo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblUserInfo.AutoSize = true;
             lblUserInfo.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblUserInfo.ForeColor = Color.White;
-            lblUserInfo.Location = new Point(1000, 25);
+            lblUserInfo.ForeColor = Color.FromArgb(230, 194, 128); // Metallic Gold Accent
+            lblUserInfo.Location = new Point(950, 25);
             lblUserInfo.Name = "lblUserInfo";
             lblUserInfo.Size = new Size(312, 23);
             lblUserInfo.TabIndex = 1;
             lblUserInfo.Text = "Xin chào | Quyền: CHƯA ĐĂNG NHẬP";
+            lblUserInfo.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblTitle
             // 
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.White;
+            lblTitle.ForeColor = Color.FromArgb(212, 175, 55); // Metallic Gold (#D4AF37)
             lblTitle.Location = new Point(25, 15);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(297, 46);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "\U0001f6d2 HAPPY MART";
+            lblTitle.Text = "🛒 HAPPY MART";
             // 
             // pnlMenu
             // 
-            pnlMenu.BackColor = Color.FromArgb(245, 235, 220);
+            pnlMenu.BackColor = Color.FromArgb(15, 39, 71); // Navy Panel sáng hơn một chút (#0F2747)
             pnlMenu.Controls.Add(btnLogout);
             pnlMenu.Controls.Add(btnUserManagement);
             pnlMenu.Controls.Add(btnReport);
@@ -97,11 +105,12 @@
             // btnLogout
             // 
             btnLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnLogout.BackColor = Color.FromArgb(90, 60, 45);
+            btnLogout.BackColor = Color.FromArgb(30, 55, 90);
+            btnLogout.Cursor = Cursors.Hand;
             btnLogout.FlatAppearance.BorderSize = 0;
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
-            btnLogout.ForeColor = Color.White;
+            btnLogout.ForeColor = Color.FromArgb(230, 194, 128);
             btnLogout.Location = new Point(15, 610);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(200, 50);
@@ -112,7 +121,8 @@
             // 
             // btnUserManagement
             // 
-            btnUserManagement.BackColor = Color.FromArgb(160, 120, 85);
+            btnUserManagement.BackColor = Color.FromArgb(20, 48, 82);
+            btnUserManagement.Cursor = Cursors.Hand;
             btnUserManagement.FlatAppearance.BorderSize = 0;
             btnUserManagement.FlatStyle = FlatStyle.Flat;
             btnUserManagement.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
@@ -127,7 +137,8 @@
             // 
             // btnReport
             // 
-            btnReport.BackColor = Color.FromArgb(160, 120, 85);
+            btnReport.BackColor = Color.FromArgb(20, 48, 82);
+            btnReport.Cursor = Cursors.Hand;
             btnReport.FlatAppearance.BorderSize = 0;
             btnReport.FlatStyle = FlatStyle.Flat;
             btnReport.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
@@ -142,7 +153,8 @@
             // 
             // btnCustomer
             // 
-            btnCustomer.BackColor = Color.FromArgb(160, 120, 85);
+            btnCustomer.BackColor = Color.FromArgb(20, 48, 82);
+            btnCustomer.Cursor = Cursors.Hand;
             btnCustomer.FlatAppearance.BorderSize = 0;
             btnCustomer.FlatStyle = FlatStyle.Flat;
             btnCustomer.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
@@ -157,7 +169,8 @@
             // 
             // btnProduct
             // 
-            btnProduct.BackColor = Color.FromArgb(160, 120, 85);
+            btnProduct.BackColor = Color.FromArgb(20, 48, 82);
+            btnProduct.Cursor = Cursors.Hand;
             btnProduct.FlatAppearance.BorderSize = 0;
             btnProduct.FlatStyle = FlatStyle.Flat;
             btnProduct.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
@@ -172,7 +185,8 @@
             // 
             // btnCategory
             // 
-            btnCategory.BackColor = Color.FromArgb(160, 120, 85);
+            btnCategory.BackColor = Color.FromArgb(20, 48, 82);
+            btnCategory.Cursor = Cursors.Hand;
             btnCategory.FlatAppearance.BorderSize = 0;
             btnCategory.FlatStyle = FlatStyle.Flat;
             btnCategory.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
@@ -187,33 +201,34 @@
             // 
             // btnPOS
             // 
-            btnPOS.BackColor = Color.FromArgb(111, 78, 55);
+            btnPOS.BackColor = Color.FromArgb(212, 175, 55); // Metallic Gold nổi bật cho nút chính
+            btnPOS.Cursor = Cursors.Hand;
             btnPOS.FlatAppearance.BorderSize = 0;
             btnPOS.FlatStyle = FlatStyle.Flat;
             btnPOS.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
-            btnPOS.ForeColor = Color.White;
+            btnPOS.ForeColor = Color.FromArgb(11, 30, 54); // Chữ Dark Navy tương phản cao
             btnPOS.Location = new Point(15, 55);
             btnPOS.Name = "btnPOS";
             btnPOS.Size = new Size(200, 50);
             btnPOS.TabIndex = 1;
-            btnPOS.Text = "\U0001f6d2  Bán hàng POS";
+            btnPOS.Text = "🛒  Bán hàng POS";
             btnPOS.UseVisualStyleBackColor = false;
             btnPOS.Click += btnPOS_Click;
             // 
             // lblMenuTitle
             // 
             lblMenuTitle.AutoSize = true;
-            lblMenuTitle.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            lblMenuTitle.ForeColor = Color.FromArgb(111, 78, 55);
-            lblMenuTitle.Location = new Point(22, 18);
+            lblMenuTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblMenuTitle.ForeColor = Color.FromArgb(230, 194, 128);
+            lblMenuTitle.Location = new Point(20, 18);
             lblMenuTitle.Name = "lblMenuTitle";
-            lblMenuTitle.Size = new Size(228, 30);
+            lblMenuTitle.Size = new Size(200, 28);
             lblMenuTitle.TabIndex = 0;
             lblMenuTitle.Text = "HỆ THỐNG QUẢN LÝ";
             // 
             // pnlContent
             // 
-            pnlContent.BackColor = Color.FromArgb(250, 248, 245);
+            pnlContent.BackColor = Color.FromArgb(248, 249, 250); // Nền sáng sạch sẽ (#F8F9FA)
             pnlContent.Controls.Add(lblWelcome);
             pnlContent.Dock = DockStyle.Fill;
             pnlContent.Location = new Point(230, 70);
@@ -226,12 +241,12 @@
             // 
             lblWelcome.Dock = DockStyle.Fill;
             lblWelcome.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
-            lblWelcome.ForeColor = Color.FromArgb(111, 78, 55);
+            lblWelcome.ForeColor = Color.FromArgb(11, 30, 54); // Dark Navy
             lblWelcome.Location = new Point(0, 0);
             lblWelcome.Name = "lblWelcome";
             lblWelcome.Size = new Size(1050, 680);
             lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "\U0001f6d2 HAPPY MART\r\n\r\nHỆ THỐNG POS THU NGÂN\r\nTÍCH HỢP QUẢN LÝ KHO";
+            lblWelcome.Text = "🛒 HAPPY MART\r\n\r\nHỆ THỐNG POS THU NGÂN\r\nTÍCH HỢP QUẢN LÝ KHO";
             lblWelcome.TextAlign = ContentAlignment.MiddleCenter;
             lblWelcome.Click += lblWelcome_Click;
             // 
@@ -257,10 +272,6 @@
         }
 
         #endregion
-
-        // ============================================================
-        // CONTROLS
-        // ============================================================
 
         private Panel pnlHeader;
         private Label lblTitle;

@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MiniSupermarket.API.Data;
+using MiniSupermarket.API.Models;
+using MiniSupermarket.API.Security;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -17,6 +19,7 @@ namespace MiniSupermarket.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Microsoft.AspNetCore.Authorization.AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -54,12 +57,11 @@ namespace MiniSupermarket.API.Controllers
 
             // Tìm tài khoản trong bảng Users
             var user = await _context.Users
-                .FirstOrDefaultAsync(u =>
-                    u.Username == request.Username &&
-                    u.Password == request.Password);
+                .FirstOrDefaultAsync(u => u.Username == request.Username.Trim());
 
-            // Không tìm thấy tài khoản
-            if (user == null)
+            if (user == null ||
+                (!PasswordSecurity.Verify(request.Password, user.Password) &&
+                 !string.Equals(user.Password, request.Password, StringComparison.Ordinal)))
             {
                 return Unauthorized(new
                 {
@@ -69,36 +71,39 @@ namespace MiniSupermarket.API.Controllers
             }
 
             // Tạo JWT Token
-            var token = GenerateJwtToken(
+            var (token, expiresAt) = GenerateJwtToken(
+                user.UserId,
                 user.Username,
                 user.Role
             );
 
-            // Đăng nhập thành công
-            return Ok(new
+            // Nâng cấp tài khoản cũ đang lưu mật khẩu thô ngay sau lần đăng nhập hợp lệ.
+            if (!user.Password.StartsWith("PBKDF2-SHA256$", StringComparison.Ordinal))
             {
-                success = true,
-                token = token,
-                role = user.Role,
-                username = user.Username,
-                fullName = user.FullName
-            });
+                user.Password = PasswordSecurity.Hash(request.Password);
+                await _context.SaveChangesAsync();
+            }
+
+            // Đăng nhập thành công
+            return Ok(new LoginResponseDto(token, user.Username, user.Role, user.FullName, expiresAt));
         }
 
         // ============================================================
         // TẠO JWT TOKEN
         // ============================================================
 
-        private string GenerateJwtToken(
+        private (string Token, DateTime ExpiresAt) GenerateJwtToken(
+            int userId,
             string username,
             string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
             // Lấy Secret Key từ appsettings.json
-            var secretKey =
-                _configuration["JwtSettings:Secret"]
-                ?? "SupermarketSecretKeyDoAnMonHoc2026SecureString!!";
+            var secretKey = _configuration["JwtSettings:Secret"]!;
+            var issuer = _configuration["JwtSettings:Issuer"]!;
+            var audience = _configuration["JwtSettings:Audience"]!;
+            var expiresAt = DateTime.UtcNow.AddHours(2);
 
             var key = Encoding.ASCII.GetBytes(secretKey);
 
@@ -111,6 +116,7 @@ namespace MiniSupermarket.API.Controllers
                             ClaimTypes.Name,
                             username
                         ),
+                        new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
 
                         new Claim(
                             ClaimTypes.Role,
@@ -119,8 +125,9 @@ namespace MiniSupermarket.API.Controllers
                     }
                 ),
 
-                // Token có hiệu lực 2 giờ
-                Expires = DateTime.UtcNow.AddHours(2),
+                Issuer = issuer,
+                Audience = audience,
+                Expires = expiresAt,
 
                 SigningCredentials =
                     new SigningCredentials(
@@ -132,18 +139,7 @@ namespace MiniSupermarket.API.Controllers
             var token =
                 tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
+            return (tokenHandler.WriteToken(token), expiresAt);
         }
-    }
-
-    // ================================================================
-    // DTO ĐĂNG NHẬP
-    // ================================================================
-
-    public class LoginRequestDto
-    {
-        public string Username { get; set; } = string.Empty;
-
-        public string Password { get; set; } = string.Empty;
     }
 }

@@ -23,6 +23,10 @@ namespace MiniSupermarket.API.Data
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
         // ============================================================
         // DỮ LIỆU MẪU
         // ============================================================
@@ -30,6 +34,38 @@ namespace MiniSupermarket.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Product>()
+                .HasIndex(product => product.Barcode)
+                .IsUnique();
+
+            modelBuilder.Entity<Product>()
+                .HasOne(product => product.Category)
+                .WithMany(category => category.Products)
+                .HasForeignKey(product => product.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Order>()
+                .HasIndex(order => order.OrderCode)
+                .IsUnique();
+
+            modelBuilder.Entity<Order>()
+                .HasOne(order => order.Customer)
+                .WithMany()
+                .HasForeignKey(order => order.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OrderDetail>()
+                .HasOne(detail => detail.Order)
+                .WithMany(order => order.Details)
+                .HasForeignKey(detail => detail.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OrderDetail>()
+                .HasOne(detail => detail.Product)
+                .WithMany()
+                .HasForeignKey(detail => detail.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // --------------------------------------------------------
             // DỮ LIỆU MẪU CUSTOMER - CỬA HÀNG TIỆN LỢI HAPPY MART

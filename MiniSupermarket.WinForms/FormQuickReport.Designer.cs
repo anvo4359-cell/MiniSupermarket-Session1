@@ -1,40 +1,31 @@
-﻿namespace MiniSupermarket.WinForms
+﻿// ================================================================
+// ********** THÔNG TIN SINH VIÊN **********
+// HỌ TÊN : VO THI THUY AN
+// LỚP    : CCQ2411C
+// MSSV   : 2124110097
+// MÔN    : LẬP TRÌNH ỨNG DỤNG
+// NGÀY   : 26/09/2026
+// ================================================================
+
+namespace MiniSupermarket.WinForms
 {
     partial class FormQuickReport
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        private Panel pnlHeader;
-        private Label lblTitle;
-        private Label lblDate;
-        private DateTimePicker dtpReportDate;
-        private Button btnRunReport;
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblSubTitle;
+        private System.Windows.Forms.Label lblDate;
+        private System.Windows.Forms.DateTimePicker dtpReportDate;
+        private System.Windows.Forms.Button btnRunReport;
 
-        private Panel pnlOrders;
-        private Panel pnlRevenue;
-        private Panel pnlBestSeller;
-
-        private Label lblOrdersTitle;
-        private Label lblRevenueTitle;
-        private Label lblBestSellerTitle;
-
-        private Label lblTotalOrders;
-        private Label lblTotalRevenue;
-        private Label lblBestSeller;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
             {
                 components.Dispose();
             }
-
             base.Dispose(disposing);
         }
 
@@ -42,249 +33,104 @@
 
         private void InitializeComponent()
         {
-            pnlHeader = new Panel();
-            lblTitle = new Label();
-            lblDate = new Label();
-            dtpReportDate = new DateTimePicker();
-            btnRunReport = new Button();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.lblSubTitle = new System.Windows.Forms.Label();
+            this.lblDate = new System.Windows.Forms.Label();
+            this.dtpReportDate = new System.Windows.Forms.DateTimePicker();
+            this.btnRunReport = new System.Windows.Forms.Button();
+            this.pnlHeader.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // pnlHeader
+            // 
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(11, 30, 54);
+            this.pnlHeader.Controls.Add(this.lblTitle);
+            this.pnlHeader.Controls.Add(this.lblSubTitle);
+            this.pnlHeader.Controls.Add(this.lblDate);
+            this.pnlHeader.Controls.Add(this.dtpReportDate);
+            this.pnlHeader.Controls.Add(this.btnRunReport);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1120, 130);
+            this.pnlHeader.TabIndex = 0;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(212, 175, 55);
+            this.lblTitle.Location = new System.Drawing.Point(22, 12);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(262, 32);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "BÁO CÁO DOANH THU";
+            // 
+            // lblSubTitle
+            // 
+            this.lblSubTitle.AutoSize = true;
+            this.lblSubTitle.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblSubTitle.ForeColor = System.Drawing.Color.FromArgb(180, 200, 220);
+            this.lblSubTitle.Location = new System.Drawing.Point(25, 48);
+            this.lblSubTitle.Name = "lblSubTitle";
+            this.lblSubTitle.Size = new System.Drawing.Size(260, 15);
+            this.lblSubTitle.TabIndex = 1;
+            this.lblSubTitle.Text = "HAPPY MART  |  THỐNG KÊ HOẠT ĐỘNG BÁN HÀNG";
+            // 
+            // lblDate
+            // 
+            this.lblDate.AutoSize = true;
+            this.lblDate.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblDate.ForeColor = System.Drawing.Color.White;
+            this.lblDate.Location = new System.Drawing.Point(25, 87);
+            this.lblDate.Name = "lblDate";
+            this.lblDate.Size = new System.Drawing.Size(95, 17);
+            this.lblDate.TabIndex = 2;
+            this.lblDate.Text = "Ngày báo cáo:";
+            // 
+            // dtpReportDate
+            // 
+            this.dtpReportDate.CustomFormat = "dd/MM/yyyy";
+            this.dtpReportDate.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.dtpReportDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpReportDate.Location = new System.Drawing.Point(130, 83);
+            this.dtpReportDate.Name = "dtpReportDate";
+            this.dtpReportDate.Size = new System.Drawing.Size(145, 25);
+            this.dtpReportDate.TabIndex = 3;
+            // 
+            // btnRunReport
+            // 
+            this.btnRunReport.BackColor = System.Drawing.Color.FromArgb(212, 175, 55);
+            this.btnRunReport.FlatAppearance.BorderSize = 0;
+            this.btnRunReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRunReport.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnRunReport.ForeColor = System.Drawing.Color.FromArgb(11, 30, 54);
+            this.btnRunReport.Location = new System.Drawing.Point(290, 80);
+            this.btnRunReport.Name = "btnRunReport";
+            this.btnRunReport.Size = new System.Drawing.Size(130, 32);
+            this.btnRunReport.TabIndex = 4;
+            this.btnRunReport.Text = "Xem báo cáo";
+            this.btnRunReport.UseVisualStyleBackColor = false;
+            this.btnRunReport.Click += new System.EventHandler(this.btnRunReport_Click);
+            // 
+            // FormQuickReport
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(244, 246, 249);
+            this.ClientSize = new System.Drawing.Size(1120, 780);
+            this.ControlBox = false;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "FormQuickReport";
+            this.Text = "Happy Mart POS - Báo Cáo Doanh Thu & Kho Hàng";
+            this.Load += new System.EventHandler(this.FormQuickReport_Load);
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
+            this.ResumeLayout(false);
 
-            pnlOrders = new Panel();
-            pnlRevenue = new Panel();
-            pnlBestSeller = new Panel();
-
-            lblOrdersTitle = new Label();
-            lblRevenueTitle = new Label();
-            lblBestSellerTitle = new Label();
-
-            lblTotalOrders = new Label();
-            lblTotalRevenue = new Label();
-            lblBestSeller = new Label();
-
-            pnlHeader.SuspendLayout();
-            pnlOrders.SuspendLayout();
-            pnlRevenue.SuspendLayout();
-            pnlBestSeller.SuspendLayout();
-
-            SuspendLayout();
-
-            // =========================================================
-            // FORM
-            // =========================================================
-
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(248, 244, 238);
-            ClientSize = new Size(1100, 650);
-            FormBorderStyle = FormBorderStyle.None;
-            Name = "FormQuickReport";
-            Text = "Báo cáo doanh thu";
-            Load += FormQuickReport_Load;
-
-            // =========================================================
-            // HEADER
-            // =========================================================
-
-            pnlHeader.BackColor = Color.FromArgb(111, 78, 55);
-            pnlHeader.Dock = DockStyle.Top;
-            pnlHeader.Location = new Point(0, 0);
-            pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1100, 130);
-            pnlHeader.TabIndex = 0;
-
-            // TITLE
-
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new Font(
-                "Segoe UI",
-                22F,
-                FontStyle.Bold
-            );
-            lblTitle.ForeColor = Color.FromArgb(230, 194, 128);
-            lblTitle.Location = new Point(35, 22);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(500, 41);
-            lblTitle.Text = "BÁO CÁO DOANH THU";
-
-            // DATE LABEL
-
-            lblDate.AutoSize = true;
-            lblDate.Font = new Font(
-                "Segoe UI",
-                10F,
-                FontStyle.Regular
-            );
-            lblDate.ForeColor = Color.White;
-            lblDate.Location = new Point(38, 82);
-            lblDate.Name = "lblDate";
-            lblDate.Text = "Ngày báo cáo:";
-
-            // DATE PICKER
-
-            dtpReportDate.Font = new Font(
-                "Segoe UI",
-                10F,
-                FontStyle.Regular
-            );
-            dtpReportDate.Format = DateTimePickerFormat.Short;
-            dtpReportDate.Location = new Point(140, 78);
-            dtpReportDate.Name = "dtpReportDate";
-            dtpReportDate.Size = new Size(145, 30);
-
-            // RUN REPORT BUTTON
-
-            btnRunReport.BackColor = Color.FromArgb(230, 194, 128);
-            btnRunReport.FlatAppearance.BorderSize = 0;
-            btnRunReport.FlatStyle = FlatStyle.Flat;
-            btnRunReport.Font = new Font(
-                "Segoe UI",
-                10F,
-                FontStyle.Bold
-            );
-            btnRunReport.ForeColor = Color.FromArgb(70, 45, 30);
-            btnRunReport.Location = new Point(305, 76);
-            btnRunReport.Name = "btnRunReport";
-            btnRunReport.Size = new Size(145, 36);
-            btnRunReport.Text = "Xem báo cáo";
-            btnRunReport.UseVisualStyleBackColor = false;
-            btnRunReport.Click += btnRunReport_Click;
-
-            // ADD HEADER CONTROLS
-
-            pnlHeader.Controls.Add(lblTitle);
-            pnlHeader.Controls.Add(lblDate);
-            pnlHeader.Controls.Add(dtpReportDate);
-            pnlHeader.Controls.Add(btnRunReport);
-
-            // =========================================================
-            // PANEL 1 - TOTAL ORDERS
-            // =========================================================
-
-            pnlOrders.BackColor = Color.White;
-            pnlOrders.BorderStyle = BorderStyle.FixedSingle;
-            pnlOrders.Location = new Point(35, 170);
-            pnlOrders.Name = "pnlOrders";
-            pnlOrders.Size = new Size(315, 180);
-            pnlOrders.TabIndex = 1;
-
-            lblOrdersTitle.AutoSize = true;
-            lblOrdersTitle.Font = new Font(
-                "Segoe UI",
-                11F,
-                FontStyle.Bold
-            );
-            lblOrdersTitle.ForeColor = Color.FromArgb(111, 78, 55);
-            lblOrdersTitle.Location = new Point(25, 22);
-            lblOrdersTitle.Name = "lblOrdersTitle";
-            lblOrdersTitle.Text = "TỔNG SỐ HÓA ĐƠN";
-
-            lblTotalOrders.AutoSize = true;
-            lblTotalOrders.Font = new Font(
-                "Segoe UI",
-                28F,
-                FontStyle.Bold
-            );
-            lblTotalOrders.ForeColor = Color.FromArgb(111, 78, 55);
-            lblTotalOrders.Location = new Point(25, 65);
-            lblTotalOrders.Name = "lblTotalOrders";
-            lblTotalOrders.Text = "0";
-
-            pnlOrders.Controls.Add(lblOrdersTitle);
-            pnlOrders.Controls.Add(lblTotalOrders);
-
-            // =========================================================
-            // PANEL 2 - TOTAL REVENUE
-            // =========================================================
-
-            pnlRevenue.BackColor = Color.White;
-            pnlRevenue.BorderStyle = BorderStyle.FixedSingle;
-            pnlRevenue.Location = new Point(390, 170);
-            pnlRevenue.Name = "pnlRevenue";
-            pnlRevenue.Size = new Size(315, 180);
-            pnlRevenue.TabIndex = 2;
-
-            lblRevenueTitle.AutoSize = true;
-            lblRevenueTitle.Font = new Font(
-                "Segoe UI",
-                11F,
-                FontStyle.Bold
-            );
-            lblRevenueTitle.ForeColor = Color.FromArgb(111, 78, 55);
-            lblRevenueTitle.Location = new Point(25, 22);
-            lblRevenueTitle.Name = "lblRevenueTitle";
-            lblRevenueTitle.Text = "TỔNG DOANH THU";
-
-            lblTotalRevenue.AutoSize = true;
-            lblTotalRevenue.Font = new Font(
-                "Segoe UI",
-                24F,
-                FontStyle.Bold
-            );
-            lblTotalRevenue.ForeColor = Color.FromArgb(111, 78, 55);
-            lblTotalRevenue.Location = new Point(25, 68);
-            lblTotalRevenue.Name = "lblTotalRevenue";
-            lblTotalRevenue.Text = "0 VNĐ";
-
-            pnlRevenue.Controls.Add(lblRevenueTitle);
-            pnlRevenue.Controls.Add(lblTotalRevenue);
-
-            // =========================================================
-            // PANEL 3 - BEST SELLER
-            // =========================================================
-
-            pnlBestSeller.BackColor = Color.White;
-            pnlBestSeller.BorderStyle = BorderStyle.FixedSingle;
-            pnlBestSeller.Location = new Point(745, 170);
-            pnlBestSeller.Name = "pnlBestSeller";
-            pnlBestSeller.Size = new Size(315, 180);
-            pnlBestSeller.TabIndex = 3;
-
-            lblBestSellerTitle.AutoSize = true;
-            lblBestSellerTitle.Font = new Font(
-                "Segoe UI",
-                11F,
-                FontStyle.Bold
-            );
-            lblBestSellerTitle.ForeColor = Color.FromArgb(111, 78, 55);
-            lblBestSellerTitle.Location = new Point(25, 22);
-            lblBestSellerTitle.Name = "lblBestSellerTitle";
-            lblBestSellerTitle.Text = "MẶT HÀNG BÁN CHẠY NHẤT";
-
-            lblBestSeller.AutoSize = true;
-            lblBestSeller.Font = new Font(
-                "Segoe UI",
-                18F,
-                FontStyle.Bold
-            );
-            lblBestSeller.ForeColor = Color.FromArgb(111, 78, 55);
-            lblBestSeller.Location = new Point(25, 72);
-            lblBestSeller.Name = "lblBestSeller";
-            lblBestSeller.Text = "Chưa có dữ liệu";
-
-            pnlBestSeller.Controls.Add(lblBestSellerTitle);
-            pnlBestSeller.Controls.Add(lblBestSeller);
-
-            // =========================================================
-            // ADD PANELS TO FORM
-            // =========================================================
-
-            Controls.Add(pnlBestSeller);
-            Controls.Add(pnlRevenue);
-            Controls.Add(pnlOrders);
-            Controls.Add(pnlHeader);
-
-            pnlHeader.ResumeLayout(false);
-            pnlHeader.PerformLayout();
-
-            pnlOrders.ResumeLayout(false);
-            pnlOrders.PerformLayout();
-
-            pnlRevenue.ResumeLayout(false);
-            pnlRevenue.PerformLayout();
-
-            pnlBestSeller.ResumeLayout(false);
-            pnlBestSeller.PerformLayout();
-
-            ResumeLayout(false);
         }
 
         #endregion

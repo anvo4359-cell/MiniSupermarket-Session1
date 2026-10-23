@@ -1,3 +1,38 @@
-.vs/ 
-bin/ 
-obj/ 
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Test output
+TestResults/
+*.trx
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+
+# Local databases and generated files
+*.db
+*.sqlite
+*.mdf
+*.ldf
+
+# Secrets and local configuration
+appsettings.Local.json
+secrets.json
+.env
+.env.*
+
+# Logs and diagnostics
+*.log
+
+# Node tools, if introduced later
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db

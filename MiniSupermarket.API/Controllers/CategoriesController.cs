@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniSupermarket.API.Data;
 using MiniSupermarket.API.Models;
+using MiniSupermarket.API.Models.DTOs;
 
 namespace MiniSupermarket.API.Controllers
 {
@@ -85,10 +86,57 @@ namespace MiniSupermarket.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("paged")]
+        public async Task<ActionResult<PagedResult<CategoryItemDto>>> GetPaged(
+            [FromQuery] string? keyword = null,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 5)
+        {
+            if (pageNumber < 1)
+                return BadRequest(new { message = "Số trang phải lớn hơn hoặc bằng 1!" });
+
+            if (pageSize < 1 || pageSize > 50)
+                return BadRequest(new { message = "Kích thước trang phải từ 1 đến 50!" });
+
+            var query = _context.Categories
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                keyword = keyword.Trim();
+                query = query.Where(category => category.CategoryName.Contains(keyword));
+            }
+
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            var items = await query
+                .OrderBy(category => category.CategoryId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(category => new CategoryItemDto
+                {
+                    CategoryId = category.CategoryId,
+                    CategoryName = category.CategoryName,
+                    Description = category.Description
+                })
+                .ToListAsync();
+
+            return Ok(new PagedResult<CategoryItemDto>
+            {
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                TotalPages = totalPages,
+                Items = items
+            });
+        }
+
         // ==================================================
         // 4. CREATE: Thêm mới nhóm hàng
         // POST /api/categories
         // ==================================================
+        [Authorize(Roles = "Admin,Warehouse")]
         [HttpPost]
         public async Task<ActionResult<Category>> Create(
             [FromBody] Category newCat)
@@ -99,6 +147,13 @@ namespace MiniSupermarket.API.Controllers
                 {
                     message = "Tên không được trống!"
                 });
+            }
+
+            newCat.CategoryName = newCat.CategoryName.Trim();
+            if (await _context.Categories.AnyAsync(category =>
+                category.CategoryName == newCat.CategoryName))
+            {
+                return Conflict(new { message = "Tên nhóm hàng đã tồn tại!" });
             }
 
             _context.Categories.Add(newCat);
@@ -143,6 +198,7 @@ namespace MiniSupermarket.API.Controllers
         // 7. UPDATE: Cập nhật nhóm hàng
         // PUT /api/categories/{id}
         // ==================================================
+        [Authorize(Roles = "Admin,Warehouse")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
             int id,
@@ -179,6 +235,7 @@ namespace MiniSupermarket.API.Controllers
         // 8. DELETE: Xóa nhóm hàng
         // DELETE /api/categories/{id}
         // ==================================================
+        [Authorize(Roles = "Admin,Warehouse")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

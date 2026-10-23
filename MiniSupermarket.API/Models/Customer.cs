@@ -22,5 +22,9 @@ namespace MiniSupermarket.API.Models
 
         [StringLength(100)]
         public string Email { get; set; } = string.Empty;
+
+        [Range(0, int.MaxValue, ErrorMessage = "Điểm thưởng không được âm")]
+        public int RewardPoints { get; set; }
+
     }
 }

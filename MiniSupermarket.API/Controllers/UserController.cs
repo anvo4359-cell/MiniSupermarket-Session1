@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniSupermarket.API.Data;
 using MiniSupermarket.API.Models;
+using MiniSupermarket.API.Security;
+using MiniSupermarket.API.Models.DTOs;
 
 namespace MiniSupermarket.API.Controllers
 {
@@ -83,7 +85,7 @@ namespace MiniSupermarket.API.Controllers
             }
 
             user.Username = user.Username.Trim();
-            user.Password = user.Password.Trim();
+            user.Password = PasswordSecurity.Hash(user.Password.Trim());
             user.Role = role;
             user.FullName = user.FullName.Trim();
 
@@ -149,7 +151,10 @@ namespace MiniSupermarket.API.Controllers
             }
 
             existingUser.Username = user.Username.Trim();
-            existingUser.Password = user.Password.Trim();
+            if (!string.IsNullOrWhiteSpace(user.Password))
+            {
+                existingUser.Password = PasswordSecurity.Hash(user.Password.Trim());
+            }
             existingUser.Role = role;
             existingUser.FullName = user.FullName.Trim();
 
@@ -202,6 +207,56 @@ namespace MiniSupermarket.API.Controllers
                 .ToListAsync();
 
             return users;
+        }
+
+        [HttpGet("paged")]
+        public async Task<ActionResult<PagedResult<UserItemDto>>> GetPaged(
+            [FromQuery] string? keyword = null,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 5)
+        {
+            if (pageNumber < 1)
+                return BadRequest(new { message = "Số trang phải lớn hơn hoặc bằng 1!" });
+
+            if (pageSize < 1 || pageSize > 50)
+                return BadRequest(new { message = "Kích thước trang phải từ 1 đến 50!" });
+
+            var query = _context.Users
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                keyword = keyword.Trim();
+                query = query.Where(user =>
+                    user.Username.Contains(keyword) ||
+                    user.FullName.Contains(keyword) ||
+                    user.Role.Contains(keyword));
+            }
+
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            var items = await query
+                .OrderBy(user => user.UserId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(user => new UserItemDto
+                {
+                    UserId = user.UserId,
+                    Username = user.Username,
+                    Role = user.Role,
+                    FullName = user.FullName
+                })
+                .ToListAsync();
+
+            return Ok(new PagedResult<UserItemDto>
+            {
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                TotalPages = totalPages,
+                Items = items
+            });
         }
     }
 }

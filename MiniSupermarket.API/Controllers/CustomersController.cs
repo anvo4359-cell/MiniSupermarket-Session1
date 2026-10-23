@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniSupermarket.API.Data;
 using MiniSupermarket.API.Models;
+using MiniSupermarket.API.Models.DTOs;
 
 namespace MiniSupermarket.API.Controllers
 {
@@ -48,6 +49,58 @@ namespace MiniSupermarket.API.Controllers
                 .ToListAsync();
 
             return Ok(customers);
+        }
+
+        [HttpGet("paged")]
+        public async Task<ActionResult<PagedResult<CustomerItemDto>>> GetPaged(
+            [FromQuery] string? keyword = null,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 5)
+        {
+            if (pageNumber < 1)
+                return BadRequest(new { message = "Số trang phải lớn hơn hoặc bằng 1!" });
+
+            if (pageSize < 1 || pageSize > 50)
+                return BadRequest(new { message = "Kích thước trang phải từ 1 đến 50!" });
+
+            var query = _context.Customers
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                keyword = keyword.Trim();
+                query = query.Where(customer =>
+                    customer.CustomerName.Contains(keyword) ||
+                    customer.Phone.Contains(keyword) ||
+                    customer.Email.Contains(keyword));
+            }
+
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            var items = await query
+                .OrderBy(customer => customer.CustomerId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(customer => new CustomerItemDto
+                {
+                    CustomerId = customer.CustomerId,
+                    CustomerName = customer.CustomerName,
+                    Phone = customer.Phone,
+                    Address = customer.Address,
+                    Email = customer.Email,
+                    RewardPoints = customer.RewardPoints
+                })
+                .ToListAsync();
+
+            return Ok(new PagedResult<CustomerItemDto>
+            {
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                TotalPages = totalPages,
+                Items = items
+            });
         }
 
         // ==================================================
@@ -111,6 +164,7 @@ namespace MiniSupermarket.API.Controllers
         // 4. CREATE: Thêm khách hàng
         // POST /api/customers
         // ==================================================
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPost]
         public async Task<ActionResult<Customer>> Create(
             [FromBody] Customer customer)
@@ -161,6 +215,7 @@ namespace MiniSupermarket.API.Controllers
         // 5. UPDATE: Cập nhật khách hàng
         // PUT /api/customers/{id}
         // ==================================================
+        [Authorize(Roles = "Admin,Cashier")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
             int id,
@@ -223,6 +278,7 @@ namespace MiniSupermarket.API.Controllers
         // 6. DELETE: Xóa khách hàng
         // DELETE /api/customers/{id}
         // ==================================================
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -6,6 +6,7 @@
 //********** DE TAI: HAPPY MART - POS THU NGAN TICH HOP QUAN LY KHO
 
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MiniSupermarket.API.Models
 {
@@ -27,6 +28,7 @@ namespace MiniSupermarket.API.Models
         // Mật khẩu
         [Required]
         [MaxLength(100)]
+        [JsonIgnore]
         public string Password { get; set; } = string.Empty;
 
         // Quyền người dùng: Admin / Cashier / Warehouse
